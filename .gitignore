@@ -1,93 +1,28 @@
-# Rust build artifacts
-/target/
-**/*.rs.bk
-*.pdb
+# Credentials and secrets
+*.env
+.env.*
+**/secrets.yaml
+**/values-prod.yaml
+**/*secret*.yaml
+*.pem
+*.key
 
-# Node.js dependencies and build artifacts
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.npm
-.eslintcache
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# Build artifacts
+target/
+**/target/
+dist/
+build/
 
-# Frontend build artifacts
-/frontend/build/
-/frontend/dist/
-*.tsbuildinfo
-
-# IDE and Editor files
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
-# OS files
+# OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
 
 # Logs
 *.log
 logs/
-
-# Environment files
-.env
-.env.*
-
-# Helm values files with real credentials - NEVER COMMIT THESE!
-**/values-dev.yaml
-**/values-qa.yaml
-**/values-prod.yaml
-**/values-dev-local.yaml
-**/values-qa-local.yaml
-**/values-prod-local.yaml
-**/values-local.yaml
-**/values-secrets.yaml
-k8s/**/values-*-local.yaml
-k8s/**/values-secrets.yaml
-helm/**/values-*.yaml
-
-# API credentials and secrets - NEVER COMMIT THESE!
-**/secrets.yaml
-**/credentials.yaml
-**/api-keys.yaml
-**/*credentials*
-**/*secrets*
-**/*api-key*
-**/kraken-credentials.yaml
-
-# Trading platform specific
-config/production.yaml
-config/staging.yaml
-config/secrets.yaml
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Temporary files
-*.tmp
-*.temp
-.cache/
-
-# Rust-specific
-Cargo.lock
-
-# Diesel schema (generated)
-diesel_schema.rs

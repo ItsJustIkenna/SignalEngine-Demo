@@ -437,20 +437,20 @@ strategies:
 secrets:
   # Kraken API credentials (TEMPLATE - replace with real values)
   kraken:
-    apiKey: "YOUR_KRAKEN_API_KEY_HERE"
-    secretKey: "YOUR_KRAKEN_SECRET_KEY_HERE"
+    apiKey: "YOUR_API_KEY_HERE"
+    secretKey: "YOUR_SECRET_KEY_HERE"
   
   # Database credentials  
   database:
-    password: "YOUR_DATABASE_PASSWORD_HERE"
+    password: "CHANGE_ME_IN_PRODUCTION"
   
   # Redis credentials
   redis:
-    password: "YOUR_REDIS_PASSWORD_HERE"
+    password: "CHANGE_ME_IN_PRODUCTION"
     
   # Message broker credentials
   messageBroker:
-    password: "YOUR_MESSAGE_BROKER_PASSWORD_HERE"
+    password: "CHANGE_ME_IN_PRODUCTION"
 
 # ==============================================================================
 # Performance & Optimization
