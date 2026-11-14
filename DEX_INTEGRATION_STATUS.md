@@ -73,13 +73,7 @@ Run with: `cargo run --example sui_dex_trading`
   - `SuiTestnet`
   - `SuiDevnet`
 
-- ✅ Finality metrics implemented:
-  ```rust
-  Self::Sui => 400ms              // 30x faster than Ethereum!
-  Self::Solana => 400ms           // Similar to SUI
-  Self::Polygon => 2_000ms        // 5x slower
-  Self::Ethereum => 12_000ms      // 30x slower
-  ```
+- ✅ Per-network finality settings are configured (figures in code are not measured here)
 
 ### Connector Implementations (100%)
 
@@ -89,7 +83,7 @@ Run with: `cargo run --example sui_dex_trading`
 **Features:**
 - Concentrated liquidity AMM (like Uniswap V3)
 - 0.3% swap fees
-- Sub-second finality (~400ms)
+- Sui network confirmation (not measured here)
 - Extremely low gas (~$0.0001/tx)
 
 **Status:** Template complete, ready for sui-sdk integration
@@ -105,7 +99,7 @@ sui-json-rpc-types = "1.0"
 - Pool discovery from Cetus registry
 - Swap transaction building (PTB)
 - Transaction signing with wallet
-- Monitor tx confirmation (~400ms)
+- Monitor tx confirmation
 ```
 
 #### 2. DeepBook (SUI CLOB) ✅
@@ -114,17 +108,17 @@ sui-json-rpc-types = "1.0"
 **Features:**
 - Native SUI Central Limit Order Book (NOT an AMM!)
 - True limit orders (like Kraken/CEX)
-- Market orders with sub-second fills
+- Market orders (fill time not measured here)
 - Order cancellation support
 - 0.1% maker fees (lower than AMMs)
 - No impermanent loss for market makers
 
 **Status:** Template complete, ready for sui-sdk integration
 
-**Why DeepBook is PERFECT for your HFT market making:**
+**Why DeepBook can fit market making:**
 - ✅ **Familiar orderbook interface** - Just like Kraken, not AMM pools
 - ✅ **True limit orders** - Place buy/sell at specific prices
-- ✅ **Sub-second execution** - 400ms finality
+- ✅ Sui network confirmation (not measured here)
 - ✅ **Cross-venue arbitrage** - Run same Avellaneda-Stoikov on Kraken AND DeepBook
 - ✅ **Lower fees** - 0.1% maker (vs 0.3% AMM)
 - ✅ **No IL risk** - Pure market making, not liquidity provision
@@ -145,8 +139,8 @@ sui-json-rpc-types = "1.0"
 **Status:** Template complete, ready for ethers-rs integration
 
 **Why lower priority:**
-- ❌ 12 second finality (30x slower than SUI)
-- ❌ $5-50 gas fees (50,000x more expensive than SUI)
+- ❌ Slower finality than SUI (not measured here)
+- ❌ Higher gas fees than SUI (not measured here)
 - ❌ Sequential execution (SUI is parallel)
 
 #### 4. Jupiter (Solana) ✅
@@ -155,7 +149,7 @@ sui-json-rpc-types = "1.0"
 **Status:** Template complete, ready for solana-client integration
 
 **Why medium priority:**
-- ✅ 400ms finality (same as SUI)
+- ✅ Similar confirmation model to SUI (not measured here)
 - ✅ Very low fees (~$0.0001)
 - ⚠️ No native CLOB (Serum shutdown)
 - ⚠️ AMM-only (less suitable for market making)
@@ -166,12 +160,12 @@ sui-json-rpc-types = "1.0"
 
 | Exchange    | Type | Finality | Gas/Fee Cost | Market Making |
 |-------------|------|----------|--------------|---------------|
-| **DeepBook (SUI)** | **CLOB** | **400ms** | **$0.00005** | **✅ OPTIMAL** |
-| **Cetus (SUI)** | AMM | 400ms | $0.0001 | ⚠️ Good |
-| Jupiter (Solana) | AMM Agg | 400ms | $0.0001 | ⚠️ OK |
-| Uniswap (Ethereum) | AMM | 12s | $5-50 | ❌ Too slow |
+| **DeepBook (SUI)** | **CLOB** | not measured here | not measured here | **✅ Strong fit** |
+| **Cetus (SUI)** | AMM | not measured here | not measured here | ⚠️ Good |
+| Jupiter (Solana) | AMM Agg | not measured here | not measured here | ⚠️ OK |
+| Uniswap (Ethereum) | AMM | slower confirmation (not measured here) | higher fees (not measured here) | ❌ Often too slow for this use |
 
-**Recommendation:** Start with **DeepBook** for HFT market making, add Cetus for liquidity access.
+**Recommendation:** Start with **DeepBook** for market making, add Cetus for liquidity access.
 
 ---
 
@@ -192,7 +186,7 @@ sui-json-rpc-types = "1.0"
    - Query pools from Cetus SDK
    - Build swap PTB (Programmable Transaction Block)
    - Sign and submit transaction
-   - Monitor confirmation (~400ms)
+   - Monitor confirmation
 
 4. **Implement DeepBook connector:**
    - place_limit_order() - For maker orders
@@ -218,16 +212,16 @@ sui-json-rpc-types = "1.0"
 
 2. **Testnet validation:**
    - Run small orders on SUI testnet
-   - Verify 400ms finality in practice
+   - Verify confirmation time in practice (no figure claimed here)
    - Test gas cost (<$0.001)
    - Validate order fills
 
 3. **Load testing:**
-   - 100 orders/sec throughput test
+   - Throughput test (no target figure claimed here)
    - Measure actual latency distribution
    - Check gas cost at scale
 
-### Phase 3: Production Deployment (Medium Priority - 4 hours)
+### Phase 3: Deployment hardening (Medium Priority - 4 hours)
 
 1. **Security:**
    - Encrypt private keys (use AWS KMS or Vault)
@@ -258,16 +252,16 @@ sui-json-rpc-types = "1.0"
 ## 💰 Business Impact
 
 **Current Setup:**
-- HFT market making on Kraken (CEX)
+- Market making on Kraken (CEX)
 - Co-located server
-- 2.33μs execution engine
+- Measured on an 8-vCPU VM, in-process: signal-to-order under 15 μs p99
 - Avellaneda-Stoikov strategy
 
 **With SUI Integration:**
 1. **Cross-venue arbitrage:**
    - Kraken CEX ↔ DeepBook DEX
    - Capture spread differences
-   - 400ms round-trip allows 2-3 arb per second
+   - Round-trip confirmation time is not measured here
 
 2. **Deeper liquidity:**
    - Access SUI's $500M+ TVL
@@ -339,10 +333,10 @@ SignalEngine/crates/
 
 ---
 
-## 🔥 Why SUI for HFT?
+## 🔥 Why SUI for this use case?
 
 **Technical advantages:**
-1. **Sub-second finality:** 400ms (vs 12s Ethereum) = 30x faster confirmations
+1. **Faster confirmation than Ethereum:** Sui network confirmation (not measured here)
 2. **Parallel execution:** No sequential bottlenecks = higher throughput
 3. **Object-centric model:** No gas approvals needed = simpler UX
 4. **Narwhal consensus:** Built for high-throughput trading
@@ -362,7 +356,7 @@ SignalEngine/crates/
 
 **Strategic advantages:**
 1. **Early mover:** SUI DeFi is growing but not saturated
-2. **Institutional focus:** SUI targets professional traders
+2. **Audience:** SUI targets professional traders
 3. **Ecosystem support:** Mysten Labs backing, strong dev community
 4. **Future-proof:** zkLogin, sponsored transactions, programmable txns
 
@@ -391,4 +385,4 @@ Minor warnings (expected):
 
 **Status:** Architecture complete, ready for SDK integration
 **Next action:** Add sui-sdk to Cargo.toml and implement Cetus/DeepBook RPC calls
-**Timeline:** 4-8 hours for Phase 1, 2-4 days for production-ready
+**Timeline:** 4-8 hours for Phase 1, 2-4 days for a more complete integration
