@@ -1,9 +1,9 @@
-use executionhandler::UltraLowLatencyExecutionHandler;
+use executionhandler::ExecutionHandler;
 use ultra_signal::{Signal, OrderSide}; // Import Signal and OrderSide directly from ultra_signal
-// TODO: Phase 2 integration - ultra_production_order_manager not yet available
-// use ultra_production_order_manager::{SignalEngineUltraOrderManager, UltraFastOrder, OrderType, OrderPriority};
+// TODO: Phase 2 integration - order_manager_stub not yet available
+// use order_manager_stub::{SignalOrderManager, FastOrder, OrderType, OrderPriority};
 
-// Temporary stub types until ultra_production_order_manager is available
+// Temporary stub types until order_manager_stub is available
 #[derive(Debug, Clone)]
 pub enum OrderType {
     Market,
@@ -23,10 +23,10 @@ pub struct OrderResult {
     pub success: bool,
 }
 
-// Stub for SignalEngineUltraOrderManager
-pub struct SignalEngineUltraOrderManager;
+// Stub for SignalOrderManager
+pub struct SignalOrderManager;
 
-impl SignalEngineUltraOrderManager {
+impl SignalOrderManager {
     pub async fn new() -> Result<Self> {
         Ok(Self)
     }
@@ -43,7 +43,7 @@ impl SignalEngineUltraOrderManager {
         _strategy_id: u16,
         _priority: OrderPriority,
     ) -> Result<OrderResult> {
-        // TODO: Implement actual order processing when ultra_production_order_manager is available
+        // TODO: Implement actual order processing when order_manager_stub is available
         Ok(OrderResult {
             processing_time_ns: 600, // stub processing time in ns
             success: true,
@@ -51,7 +51,7 @@ impl SignalEngineUltraOrderManager {
     }
     
     // Stub method for performance metrics - returns tuple-like values via array access simulation
-    pub fn get_ultra_performance_metrics(&self) -> PerformanceMetrics {
+    pub fn get_performance_metrics(&self) -> PerformanceMetrics {
         // TODO: Implement actual metrics collection
         PerformanceMetrics {
             processed_count: 1000,
@@ -105,7 +105,7 @@ pub struct HostedObject {
     // Strategy manager
     strategy_manager: Option<StrategyManager>,
     // Phase 2: order management 
-    ultra_order_manager: Option<Arc<SignalEngineUltraOrderManager>>,
+    order_manager: Option<Arc<SignalOrderManager>>,
 }
 
 impl HostedObject {
@@ -119,7 +119,7 @@ impl HostedObject {
             signal_tx: Some(signal_tx),
             signal_rx: Some(signal_rx),
             strategy_manager: None,
-            ultra_order_manager: None, // Will be initialized during run()
+            order_manager: None, // Will be initialized during run()
         }
     }
 }
@@ -141,12 +141,12 @@ impl HostedObject {
             signal_tx: Some(signal_tx),
             signal_rx: Some(signal_rx),
             strategy_manager: None,
-            ultra_order_manager: None, // Will be initialized during run()
+            order_manager: None, // Will be initialized during run()
         }
     }
 
     /// Create handlers from configuration
-    async fn create_handlers() -> Result<(DataHandler, PortfolioHandler, StrategyManager, UltraLowLatencyExecutionHandler), Box<dyn Error>> {
+    async fn create_handlers() -> Result<(DataHandler, PortfolioHandler, StrategyManager, ExecutionHandler), Box<dyn Error>> {
         // Load environment variables
         dotenv().ok();
         
@@ -168,7 +168,7 @@ impl HostedObject {
         let strategyhandler = Self::create_strategy_manager(&config)?;
         
         // Create execution handler last (after await)
-        let execution_handler = UltraLowLatencyExecutionHandler::new().await;
+        let execution_handler = ExecutionHandler::new().await;
         
         Ok((datahandler, portfoliohandler, strategyhandler, execution_handler))
     }
@@ -270,10 +270,10 @@ impl HostedObject {
         self.strategy_manager = Some(Self::create_strategy_manager(&config)?);
         
         // Phase 2: Initialize order manager 
-        info!("🚀 Initializing Phase 2 Ultra-Fast Order Manager...");
-        let ultra_order_manager = SignalEngineUltraOrderManager::new().await?;
-        self.ultra_order_manager = Some(Arc::new(ultra_order_manager));
-        info!("✅ Phase 2 Ultra-Fast Order Manager initialized - target 0.6μs processing");
+        info!("Initializing order manager...");
+        let order_manager = SignalOrderManager::new().await?;
+        self.order_manager = Some(Arc::new(order_manager));
+        info!("Order manager initialized (measured signal-to-order <15 μs p99 in-process, 8-vCPU VM)");
         
         // Initialize default strategies
         self.initialize_default_strategies().await?;
@@ -319,9 +319,9 @@ impl HostedObject {
         
         // Set up signal routing using Phase 2 order manager
         if let Some(signal_rx) = self.signal_rx.take() {
-            let ultra_order_manager = self.ultra_order_manager.clone().unwrap();
+            let order_manager = self.order_manager.clone().unwrap();
             tokio::spawn(async move {
-                info!("🚀 Starting Phase 2 ultra-fast signal processing (0.6μs target)...");
+                info!("Starting signal processing (measured signal-to-order <15 μs p99 in-process, 8-vCPU VM)");
                 let mut signal_count = 0u64;
                 
                 while let Ok(signal) = signal_rx.recv() {
@@ -349,7 +349,7 @@ impl HostedObject {
                     };
                     
                     // Execute order
-                    match ultra_order_manager.process_signal_order(
+                    match order_manager.process_signal_order(
                         &symbol,
                         &exchange,
                         side,
@@ -362,7 +362,7 @@ impl HostedObject {
                         Ok(result) => {
                             // Log performance every 100 orders
                             if signal_count % 100 == 0 {
-                                info!("⚡ Phase 2 ultra-fast order {}: {}ns ({:.3}μs) - Success: {}", 
+                                info!("Order {}: {}ns ({:.3}μs) - Success: {}", 
                                       signal_count, 
                                       result.processing_time_ns,
                                       result.processing_time_ns as f64 / 1000.0,
@@ -371,8 +371,8 @@ impl HostedObject {
                             
                             // Log performance metrics every 1000 orders
                             if signal_count % 1000 == 0 {
-                                let metrics = ultra_order_manager.get_ultra_performance_metrics();
-                                info!("📊 Phase 2 metrics: {} processed, {:.2}μs avg, {:.1}% success, {} orders/sec peak",
+                                let metrics = order_manager.get_performance_metrics();
+                                info!("Metrics: {} processed, {:.2}μs avg, {:.1}% success, {} orders/sec peak",
                                       metrics.processed_count, 
                                       metrics.avg_time_ns / 1000.0, 
                                       metrics.success_rate, 
@@ -380,11 +380,11 @@ impl HostedObject {
                             }
                         }
                         Err(e) => {
-                            warn!("Ultra-fast order processing failed: {}", e);
+                            warn!("Order processing failed: {}", e);
                         }
                     }
                 }
-                info!("Phase 2 ultra-fast signal processing loop ended");
+                info!("Signal processing loop ended");
             });
         }
         

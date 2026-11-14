@@ -125,7 +125,7 @@ impl DatabaseExecutionPersistence for InMemoryExecutionDatabase {
 
 /// Low-latency multi-exchange execution handler
 #[derive(Clone)]
-pub struct UltraLowLatencyExecutionHandler {
+pub struct ExecutionHandler {
     connectors: Arc<RwLock<HashMap<String, Box<dyn ExchangeConnector>>>>,
     default_exchange: Option<String>,
     global_metrics: Arc<core::MetricsCollector>,
@@ -137,7 +137,7 @@ pub struct UltraLowLatencyExecutionHandler {
     _logger: Arc<SignalEngineLogger>,
 }
 
-impl UltraLowLatencyExecutionHandler {
+impl ExecutionHandler {
     /// Create a new multi-exchange execution handler
     pub async fn new() -> Self {
         let core_assignment = optimizations::CoreAssignment::optimal_assignment();
@@ -691,7 +691,7 @@ impl UltraLowLatencyExecutionHandler {
     }
 }
 
-impl Default for UltraLowLatencyExecutionHandler {
+impl Default for ExecutionHandler {
     fn default() -> Self {
         tokio::runtime::Runtime::new().unwrap().block_on(Self::new())
     }
@@ -700,7 +700,7 @@ impl Default for UltraLowLatencyExecutionHandler {
 // For backwards compatibility, provide the old interface
 pub use core::types::KrakenCredentials;
 
-impl UltraLowLatencyExecutionHandler {
+impl ExecutionHandler {
     /// Legacy constructor for backwards compatibility with Kraken-only setup
     pub fn new_kraken(
         _exchange: String,
@@ -791,7 +791,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_handler_creation() {
-        let handler = UltraLowLatencyExecutionHandler::new().await;
+        let handler = ExecutionHandler::new().await;
         assert!(handler.list_exchanges().await.is_empty());
     }
 
@@ -801,7 +801,7 @@ mod tests {
         let execution_db = Arc::new(InMemoryExecutionDatabase::new());
         
         // Create handler with database integration
-        let handler = UltraLowLatencyExecutionHandler::new_with_database(execution_db.clone()).await;
+        let handler = ExecutionHandler::new_with_database(execution_db.clone()).await;
         
         // Verify database is integrated
         assert!(handler.execution_database.is_some());
@@ -859,7 +859,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_exchange_management() {
-        let mut handler = UltraLowLatencyExecutionHandler::new().await;
+        let mut handler = ExecutionHandler::new().await;
         
         // Test adding exchange
         let config = ExchangeFactory::create_config_template("kraken").unwrap();
@@ -876,7 +876,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_supported_exchanges() {
-        let supported = UltraLowLatencyExecutionHandler::supported_exchanges();
+        let supported = ExecutionHandler::supported_exchanges();
         assert!(supported.contains(&"kraken"));
         assert!(supported.contains(&"binance"));
         assert!(supported.contains(&"coinbase"));
@@ -915,7 +915,7 @@ mod tests {
             secret_key: "test_secret".to_string(),
         };
 
-        let handler = UltraLowLatencyExecutionHandler::new_kraken(
+        let handler = ExecutionHandler::new_kraken(
             "Kraken".to_string(),
             credentials,
             Some(5),

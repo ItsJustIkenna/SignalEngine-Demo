@@ -1,14 +1,14 @@
-use executionhandler::UltraLowLatencyExecutionHandler;
+use executionhandler::ExecutionHandler;
 
 #[tokio::test]
 async fn test_new_architecture_basic() {
-    let handler = UltraLowLatencyExecutionHandler::new().await;
+    let handler = ExecutionHandler::new().await;
     assert!(handler.list_exchanges().await.is_empty());
 }
 
 #[test]
 fn test_exchange_factory() {
-    let supported = UltraLowLatencyExecutionHandler::supported_exchanges();
+    let supported = ExecutionHandler::supported_exchanges();
     assert!(supported.contains(&"kraken"));
     assert!(supported.contains(&"binance"));
     assert!(supported.contains(&"coinbase"));
@@ -16,9 +16,9 @@ fn test_exchange_factory() {
 
 #[test]
 fn test_exchange_config_templates() {
-    let kraken_config = UltraLowLatencyExecutionHandler::create_exchange_config("kraken");
+    let kraken_config = ExecutionHandler::create_exchange_config("kraken");
     assert!(kraken_config.is_ok());
     
-    let invalid_config = UltraLowLatencyExecutionHandler::create_exchange_config("invalid");
+    let invalid_config = ExecutionHandler::create_exchange_config("invalid");
     assert!(invalid_config.is_err());
 }

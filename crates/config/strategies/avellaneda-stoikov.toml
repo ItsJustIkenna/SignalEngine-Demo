@@ -27,7 +27,7 @@ daily_loss_limit = 1000.0
 cooldown_minutes = 30
 risk_scaling = 1.0
 
-[live_trading]
+[export_runtime]
 paper_trading = true
 paper_trading_days = 7
 max_orders_per_second = 10

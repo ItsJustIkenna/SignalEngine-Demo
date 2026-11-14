@@ -1,5 +1,5 @@
 // Low-latency signal dispatcher
-use ultra_signal::{Signal, UltraFastSignalQueue, SignalAction};
+use ultra_signal::{Signal, SignalQueue, SignalAction};
 use signalengine::{
     get_rdtsc, rdtsc_duration_ns, init_rdtsc, AtomicMetrics,
     SystemOptimization, ZeroCopyChannel,
@@ -11,10 +11,10 @@ use std::sync::Arc;
 use std::thread;
 
 /// Lock-free signal dispatcher optimized for low latency
-pub struct UltraFastSignalDispatcher {
+pub struct PrioritySignalDispatcher {
     // Lock-free signal queues for different priority levels
-    urgent_queue: Arc<UltraFastSignalQueue>,
-    normal_queue: Arc<UltraFastSignalQueue>,
+    urgent_queue: Arc<SignalQueue>,
+    normal_queue: Arc<SignalQueue>,
     
     // Execution handlers for different components
     execution_sender: Sender<Signal>,
@@ -31,7 +31,7 @@ pub struct UltraFastSignalDispatcher {
     batch_buffer: Vec<Signal>,
 }
 
-impl UltraFastSignalDispatcher {
+impl PrioritySignalDispatcher {
     pub fn new(
         execution_sender: Sender<Signal>,
         portfolio_sender: Sender<Signal>, 
@@ -41,8 +41,8 @@ impl UltraFastSignalDispatcher {
         init_rdtsc();
         
         Ok(Self {
-            urgent_queue: Arc::new(UltraFastSignalQueue::new(4096)?), // 4K urgent signals
-            normal_queue: Arc::new(UltraFastSignalQueue::new(8192)?), // 8K normal signals
+            urgent_queue: Arc::new(SignalQueue::new(4096)?), // 4K urgent signals
+            normal_queue: Arc::new(SignalQueue::new(8192)?), // 8K normal signals
             execution_sender,
             portfolio_sender,
             risk_sender,
@@ -334,7 +334,7 @@ pub struct DispatcherStats {
 
 /// Legacy signal dispatcher for backward compatibility
 pub struct SignalDispatcher {
-    ultra_dispatcher: UltraFastSignalDispatcher,
+    priority_dispatcher: PrioritySignalDispatcher,
 }
 
 impl SignalDispatcher {
@@ -344,7 +344,7 @@ impl SignalDispatcher {
         risk_sender: Sender<Signal>,
     ) -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
         Ok(Self {
-            ultra_dispatcher: UltraFastSignalDispatcher::new(
+            priority_dispatcher: PrioritySignalDispatcher::new(
                 execution_sender,
                 portfolio_sender,
                 risk_sender,
@@ -354,29 +354,29 @@ impl SignalDispatcher {
 
     /// Start signal processing
     pub fn start(&self) -> std::thread::JoinHandle<()> {
-        self.ultra_dispatcher.start()
+        self.priority_dispatcher.start()
     }
 
     /// Submit signal for processing
     pub fn submit(&self, signal: Signal) -> Result<(), Signal> {
-        self.ultra_dispatcher.submit_signal(signal)
+        self.priority_dispatcher.submit_signal(signal)
     }
 
     /// Submit multiple signals
     pub fn submit_batch(&self, signals: Vec<Signal>) -> usize {
-        self.ultra_dispatcher.submit_signal_batch(&signals)
+        self.priority_dispatcher.submit_signal_batch(&signals)
     }
 
     /// Get dispatcher statistics
     pub fn get_stats(&self) -> (u64, u64, u64, usize, usize) {
-        let (processed, avg_latency, max_latency) = self.ultra_dispatcher.get_metrics();
-        let (urgent_len, normal_len) = self.ultra_dispatcher.get_queue_stats();
+        let (processed, avg_latency, max_latency) = self.priority_dispatcher.get_metrics();
+        let (urgent_len, normal_len) = self.priority_dispatcher.get_queue_stats();
         (processed, avg_latency, max_latency, urgent_len, normal_len)
     }
 
     /// Stop signal processing
     pub fn stop(&self) {
-        self.ultra_dispatcher.stop();
+        self.priority_dispatcher.stop();
     }
 }
 
