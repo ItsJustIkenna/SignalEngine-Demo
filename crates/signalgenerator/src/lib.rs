@@ -366,7 +366,7 @@ impl SignalGenerator {
 
 /// High-frequency momentum strategy optimized for low latency
 #[derive(Debug)]
-pub struct UltraFastMomentumStrategy {
+pub struct MomentumStrategy {
     generator: SignalGenerator,
     momentum_threshold: f64,
     volume_spike_threshold: f64,
@@ -375,10 +375,10 @@ pub struct UltraFastMomentumStrategy {
     last_signal_time: AtomicU64,
 }
 
-impl UltraFastMomentumStrategy {
+impl MomentumStrategy {
     pub fn new(id: u16) -> Self {
         Self {
-            generator: SignalGenerator::new(id, "UltraFastMomentum".to_string()),
+            generator: SignalGenerator::new(id, "Momentum".to_string()),
             momentum_threshold: 0.0005, // 0.05% momentum threshold
             volume_spike_threshold: 2.5, // 2.5x average volume
             _max_position_size: 50000.0, // $50k max position
@@ -624,7 +624,7 @@ pub trait Strategy {
     fn get_name(&self) -> &str;
 }
 
-impl Strategy for UltraFastMomentumStrategy {
+impl Strategy for MomentumStrategy {
     fn process_tick(&mut self, market_data: &MarketData) -> Vec<Signal> {
         self.process_tick_ultra_fast(market_data).to_vec()
     }

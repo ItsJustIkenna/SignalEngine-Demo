@@ -25,7 +25,7 @@ maintainers:
 # Keywords for chart discovery
 keywords:
   - trading
-  - hft
+  - rust
   - signal-engine
-  - ultra-low-latency
+  - kubernetes
   - fintech

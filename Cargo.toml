@@ -33,7 +33,7 @@ fastrand = "2.0"
 serde = { version = "1.0", features = ["derive"] }
 atomic = "0.6"
 
-[profile.release-ultra]
+[profile.release-optimized]
 inherits = "release"
 opt-level = 3
 codegen-units = 1

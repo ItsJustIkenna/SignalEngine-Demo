@@ -18,7 +18,7 @@ use ultra_signal::{Signal, SignalAction, ExchangeId, SYMBOLS};
 use signalengine::{SignalEngineLogger, TradingContext};
 use tracing::{info, error};
 
-// Re-export ultra_engine types
+// Re-export strategy_engine types
 pub use strategies::{StrategyId, StrategyRegistry, SymbolHash};
 
 /// Strategy handler specific errors
@@ -250,7 +250,7 @@ impl HotStrategyState {
 
 /// Strategy engine
 /// 
-pub struct UltraStrategyEngine {
+pub struct StrategyEngine {
     // Lock-free strategy registry
     _registry: Arc<StrategyRegistry>,
     
@@ -268,13 +268,13 @@ pub struct UltraStrategyEngine {
 
 const SIGNAL_BUFFER_SIZE: usize = 32; // Pre-allocate for 32 signals per strategy
 
-impl Default for UltraStrategyEngine {
+impl Default for StrategyEngine {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl UltraStrategyEngine {
+impl StrategyEngine {
     pub fn new() -> Self {
         Self {
             _registry: Arc::new(StrategyRegistry::new()),
@@ -482,7 +482,7 @@ pub trait Strategy: Send + Sync {
 pub struct StrategyManager {
     #[allow(clippy::type_complexity)]
     strategies: Arc<RwLock<HashMap<String, Arc<Mutex<Box<dyn Strategy>>>>>>,
-    ultra_engine: UltraStrategyEngine,
+    strategy_engine: StrategyEngine,
     orderbooks: DashMap<(String, String), Arc<RwLock<Orderbook>>>,
     signal_store: Arc<SignalStore>,
     signal_router: Arc<Mutex<SignalRouter>>,
@@ -494,7 +494,7 @@ impl StrategyManager {
     pub fn new() -> Result<Self, Box<dyn Error>> {
         Ok(Self {
             strategies: Arc::new(RwLock::new(HashMap::new())),
-            ultra_engine: UltraStrategyEngine::new(),
+            strategy_engine: StrategyEngine::new(),
             orderbooks: DashMap::new(),
             signal_store: Arc::new(SignalStore::new()),
             signal_router: Arc::new(Mutex::new(SignalRouter::new())),
@@ -506,7 +506,7 @@ impl StrategyManager {
     pub fn new_with_orderbooks(orderbooks: DashMap<(String, String), Arc<RwLock<Orderbook>>>) -> Result<Self, Box<dyn Error>> {
         Ok(Self {
             strategies: Arc::new(RwLock::new(HashMap::new())),
-            ultra_engine: UltraStrategyEngine::new(),
+            strategy_engine: StrategyEngine::new(),
             orderbooks,
             signal_store: Arc::new(SignalStore::new()),
             signal_router: Arc::new(Mutex::new(SignalRouter::new())),
@@ -554,8 +554,8 @@ impl StrategyManager {
         Arc::clone(&self.signal_store)
     }
 
-    pub fn get_ultra_engine(&self) -> &UltraStrategyEngine {
-        &self.ultra_engine
+    pub fn get_strategy_engine(&self) -> &StrategyEngine {
+        &self.strategy_engine
     }
 
     /// Process market data from orderbook and generate signals (comprehensive mode)
@@ -607,7 +607,7 @@ impl StrategyManager {
     /// Process market data with engine
     pub fn process_market_data_ultra_fast(&self, strategy_id: StrategyId, market_data: &MarketData) -> Vec<Signal> {
         let symbol_hash = SYMBOLS.btc_usd; // Use appropriate symbol hash
-        self.ultra_engine.process_batch(
+        self.strategy_engine.process_batch(
             &[(symbol_hash, market_data.price, market_data.timestamp)],
             strategy_id
         )
@@ -771,7 +771,7 @@ mod tests {
 
     #[test]
     fn test_ultra_strategy_engine_creation() {
-        let engine = UltraStrategyEngine::new();
+        let engine = StrategyEngine::new();
         let metrics = engine.get_metrics();
         assert_eq!(metrics.strategies_executed, 0);
         assert_eq!(metrics.signals_generated, 0);
@@ -779,7 +779,7 @@ mod tests {
 
     #[test]
     fn test_strategy_registration() {
-        let engine = UltraStrategyEngine::new();
+        let engine = StrategyEngine::new();
         let strategy_id = 1;
         
         assert!(engine.register_strategy(strategy_id).is_ok());

@@ -2,7 +2,7 @@
 // This shows how to connect the SmartOrderRouter to the actual strategy_order_ops.rs
 
 use std::sync::Arc;
-use crate::UltraFastSmartOrderRouter;
+use crate::SmartOrderRouter;
 use exchangemetricaggregator::ExchangeMetricsAggregator;
 
 // Simple order data structure for database integration
@@ -72,7 +72,7 @@ impl DatabaseOrderPersistence for PostgresOrderDatabase {
 }
 
 // Example integration function showing how to connect the router with database
-pub async fn setup_smart_router_with_database() -> Result<UltraFastSmartOrderRouter, String> {
+pub async fn setup_smart_router_with_database() -> Result<SmartOrderRouter, String> {
     // Create the database persistence layer
     let _db = PostgresOrderDatabase::new("postgresql://localhost/trading_db".to_string());
     
@@ -80,7 +80,7 @@ pub async fn setup_smart_router_with_database() -> Result<UltraFastSmartOrderRou
     let metrics_aggregator = Arc::new(ExchangeMetricsAggregator::new(1000, 100));
     
     // Create the smart order router
-    let router = UltraFastSmartOrderRouter::new(metrics_aggregator);
+    let router = SmartOrderRouter::new(metrics_aggregator);
     
     // In a real implementation, you would:
     // 1. Set up periodic database sync

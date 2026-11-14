@@ -257,7 +257,7 @@ pub const fn hash_symbol(symbol: &str) -> u64 {
 pub static SYMBOLS: SymbolHashTable = SymbolHashTable::new();
 
 /// Lock-free signal queue for low latency
-pub struct UltraFastSignalQueue {
+pub struct SignalQueue {
     buffer: *mut Signal,
     capacity: usize,
     head: AtomicU64,
@@ -265,10 +265,10 @@ pub struct UltraFastSignalQueue {
     mask: u64,
 }
 
-unsafe impl Send for UltraFastSignalQueue {}
-unsafe impl Sync for UltraFastSignalQueue {}
+unsafe impl Send for SignalQueue {}
+unsafe impl Sync for SignalQueue {}
 
-impl UltraFastSignalQueue {
+impl SignalQueue {
     /// Create new queue with power-of-2 capacity for bit masking
     pub fn new(capacity_pow2: usize) -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
         assert!(capacity_pow2.is_power_of_two());
@@ -350,7 +350,7 @@ impl UltraFastSignalQueue {
     }
 }
 
-impl Drop for UltraFastSignalQueue {
+impl Drop for SignalQueue {
     fn drop(&mut self) {
         if let Ok(layout) = std::alloc::Layout::array::<Signal>(self.capacity) {
             unsafe {
@@ -390,7 +390,7 @@ mod tests {
     
     #[test] 
     fn test_queue_operations() {
-        let queue = UltraFastSignalQueue::new(1024).expect("Failed to create signal queue");
+        let queue = SignalQueue::new(1024).expect("Failed to create signal queue");
         
         let signal = Signal::urgent_market_order(
             1,

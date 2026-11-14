@@ -280,10 +280,10 @@ impl SmartOrderRoute {
 }
 
 /// Ultra-Fast Smart Order Router - main export for compatibility
-pub type SmartOrderRouter = UltraFastSmartOrderRouter;
+pub type SmartOrderRouter = SmartOrderRouter;
 
 /// Ultra-Fast Smart Order Router with lock-free concurrent access
-pub struct UltraFastSmartOrderRouter {
+pub struct SmartOrderRouter {
     // Lock-free concurrent data structures
     active_routes: Arc<DashMap<String, SmartOrderRoute>>,
     exchange_configs: Arc<DashMap<String, ExchangeConfig>>,
@@ -410,7 +410,7 @@ pub struct RoutingRule {
     pub urgency_routing: HashMap<ExecutionUrgency, Vec<String>>,
 }
 
-impl UltraFastSmartOrderRouter {
+impl SmartOrderRouter {
     pub fn new(metrics_aggregator: Arc<ExchangeMetricsAggregator>) -> Self {
         Self {
             active_routes: Arc::new(DashMap::new()),
@@ -875,7 +875,7 @@ mod tests {
     #[tokio::test]
     async fn test_ultra_fast_router_basic_operations() {
         let metrics_aggregator = Arc::new(ExchangeMetricsAggregator::new(1000, 100));
-        let router = UltraFastSmartOrderRouter::new(metrics_aggregator);
+        let router = SmartOrderRouter::new(metrics_aggregator);
         
         // Configure exchanges
         let configs = create_default_exchange_configs();

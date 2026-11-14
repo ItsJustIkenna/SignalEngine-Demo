@@ -92,7 +92,7 @@ mod tests {
         
         println!("\n✅ Performance Test PASSED");
         println!("🎯 All components operating within performance targets");
-        println!("🚀 SignalEngine ready for ultra-high frequency trading");
+        println!("SignalEngine performance test complete");
     }
 
     // Test helper functions

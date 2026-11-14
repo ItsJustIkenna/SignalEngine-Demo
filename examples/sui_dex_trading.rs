@@ -107,9 +107,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("     - Orderbook-based (like Kraken)");
     println!("     - 0.1% maker fees");
     println!("     - ~$0.00005/tx gas");
-    println!("     - OPTIMAL for HFT market making!");
+    println!("     - Supports market making in this example");
     println!();
-    println!("   Both have ~400ms finality (30x faster than Ethereum)");
+    println!("   Both are used in this example for swaps or limit orders");
     println!();
     
     println!("💡 Next Steps:");
