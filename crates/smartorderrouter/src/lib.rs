@@ -279,10 +279,7 @@ impl SmartOrderRoute {
     }
 }
 
-/// Ultra-Fast Smart Order Router - main export for compatibility
-pub type SmartOrderRouter = SmartOrderRouter;
-
-/// Ultra-Fast Smart Order Router with lock-free concurrent access
+/// Smart Order Router with lock-free concurrent access
 pub struct SmartOrderRouter {
     // Lock-free concurrent data structures
     active_routes: Arc<DashMap<String, SmartOrderRoute>>,
