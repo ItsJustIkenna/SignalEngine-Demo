@@ -688,9 +688,9 @@ mod tests {
         let data_handler = DataHandler::new().unwrap();
         let stats = data_handler.get_performance_stats();
         
-        // Should have default values
-        assert_eq!(stats.active_orderbooks, 0);
-        assert_eq!(stats.total_updates, 0);
+        // Instance counters start at zero. active_orderbooks/total_updates are process-wide
+        // and may be non-zero if other tests already populated the shared maps.
+        assert_eq!(stats.updates_processed, 0);
     }
 
     #[test]

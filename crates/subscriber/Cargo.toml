@@ -1,0 +1,9 @@
+[package]
+name = "subscriber"
+version = "0.1.0"
+edition = "2021"
+description = "In-repo subscriber stub used by this demo. Written fresh for standalone builds; not copied from MessageBrokerEngine."
+license = "MIT"
+
+[dependencies]
+thiserror = "1"

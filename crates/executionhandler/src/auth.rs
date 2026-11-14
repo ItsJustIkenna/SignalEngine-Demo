@@ -196,7 +196,7 @@ impl TradingAuthenticator {
     
     /// Simple base64-like decoding (simplified for demo)  
     fn simple_base64_decode(&self, encoded: &str) -> Result<Vec<u8>, ()> {
-        if !encoded.len().is_multiple_of(2) {
+        if encoded.len() % 2 != 0 {
             return Err(());
         }
         

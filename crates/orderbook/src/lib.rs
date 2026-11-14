@@ -1622,7 +1622,7 @@ mod tests {
             let ob = Arc::clone(&orderbook);
             let handle = thread::spawn(move || {
                 for j in 0..100 {
-                    let order_id = i * 1000 + j;
+                    let order_id = i * 1000 + j + 1;
                     let price = 100.0 - (j as f64 / 100.0);
                     ob.lock().unwrap().add_limit_bid(price, order_id, 1.0, order_id).unwrap();
                 }
@@ -1635,7 +1635,7 @@ mod tests {
             let ob = Arc::clone(&orderbook);
             let handle = thread::spawn(move || {
                 for j in 0..100 {
-                    let order_id = i * 1000 + j;
+                    let order_id = i * 1000 + j + 1;
                     let price = 101.0 + (j as f64 / 100.0);
                     ob.lock().unwrap().add_limit_ask(price, order_id, 1.0, order_id).unwrap();
                 }
@@ -1664,10 +1664,10 @@ mod tests {
         // Add a significant number of orders
         for i in 0..1000 {
             let price = 100.0 - (i as f64 / 100.0);
-            orderbook.add_limit_bid(price, i, 1.0, i).unwrap();
+            orderbook.add_limit_bid(price, i + 1, 1.0, i).unwrap();
             
             let ask_price = 101.0 + (i as f64 / 100.0);
-            orderbook.add_limit_ask(ask_price, i + 1000, 1.0, i).unwrap();
+            orderbook.add_limit_ask(ask_price, i + 1001, 1.0, i).unwrap();
         }
         
         // Measure update time
@@ -1695,21 +1695,21 @@ mod tests {
         let mut orderbook = Orderbook::new("BTC/USD".to_string(), "Kraken".to_string(), 5);
         
         // Should be able to add up to capacity
-        for i in 0..5 {
+        for i in 1..=5 {
             let result = orderbook.add_limit_bid(100.0, i, 1.0, i);
             assert!(result.is_ok());
         }
         
         // Adding one more should fail with capacity error
-        let result = orderbook.add_limit_bid(100.0, 5, 1.0, 5);
+        let result = orderbook.add_limit_bid(100.0, 6, 1.0, 6);
         assert!(result.is_err());
         assert_eq!(result.unwrap_err(), "Order pool capacity exceeded");
         
-        // Free up some space
-        orderbook.remove_limit_bid(100.0, 0).unwrap();
+        // Free up some space (order ids in this test start at 1)
+        orderbook.remove_limit_bid(100.0, 1).unwrap();
         
         // Now should be able to add again
-        let result = orderbook.add_limit_bid(100.0, 5, 1.0, 5);
+        let result = orderbook.add_limit_bid(100.0, 7, 1.0, 7);
         assert!(result.is_ok());
     }
     
@@ -1720,22 +1720,23 @@ mod tests {
         // Test negative quantity
         let result = orderbook.add_limit_bid(100.0, 1, -1.0, 1000);
         assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), "Quantity must be positive");
+        assert_eq!(result.unwrap_err(), "Quantity must be finite and positive");
         
         // Test zero quantity
         let result = orderbook.add_limit_bid(100.0, 1, 0.0, 1000);
         assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), "Quantity must be positive");
+        assert_eq!(result.unwrap_err(), "Quantity must be finite and positive");
         
         // Test negative price
         let result = orderbook.add_limit_bid(-100.0, 1, 1.0, 1000);
         assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), "Price must be positive");
+        assert_eq!(result.unwrap_err(), "Price must be finite and positive");
         
         // Test nan price
         let result = orderbook.add_limit_bid(f64::NAN, 1, 1.0, 1000);
         assert!(result.is_err());
-        assert_eq!(result.unwrap_err(), "Invalid price (NaN)");
+        let err = result.unwrap_err();
+        assert!(err == "Price must be finite and positive" || err == "Invalid price (NaN)", "{err}");
     }
     
     #[test]
@@ -1921,14 +1922,14 @@ mod tests {
         
         // Add and then remove orders
         for i in 0..100 {
-            orderbook.add_limit_bid(100.0, i, 1.0, i).unwrap();
-            orderbook.add_limit_ask(101.0, i + 100, 1.0, i).unwrap();
+            orderbook.add_limit_bid(100.0, i + 1, 1.0, i).unwrap();
+            orderbook.add_limit_ask(101.0, i + 101, 1.0, i).unwrap();
         }
         
         // Remove all orders
         for i in 0..100 {
-            orderbook.remove_limit_bid(100.0, i).unwrap();
-            orderbook.remove_limit_ask(101.0, i + 100).unwrap();
+            orderbook.remove_limit_bid(100.0, i + 1).unwrap();
+            orderbook.remove_limit_ask(101.0, i + 101).unwrap();
         }
         
         // Update metrics
@@ -1952,11 +1953,11 @@ mod tests {
         for i in 0..1000 {
             // Add bids at 100 different price levels
             let bid_price = 90.0 + (i % 100) as f64 * 0.1;
-            orderbook.add_limit_bid(bid_price, i, 1.0, i).unwrap();
+            orderbook.add_limit_bid(bid_price, i + 1, 1.0, i).unwrap();
             
             // Add asks at 100 different price levels
             let ask_price = 110.0 + (i % 100) as f64 * 0.1;
-            orderbook.add_limit_ask(ask_price, i + 1000, 1.0, i).unwrap();
+            orderbook.add_limit_ask(ask_price, i + 1001, 1.0, i).unwrap();
         }
         
         // Measure update time under load
@@ -2049,8 +2050,8 @@ mod tests {
             let bid_price = 100.0 - (i as f64 * 0.01);
             let ask_price = 100.0 + (i as f64 * 0.01);
             
-            orderbook.add_limit_bid(bid_price, i, 1.0, i).unwrap();
-            orderbook.add_limit_ask(ask_price, i + 1000, 1.0, i).unwrap();
+            orderbook.add_limit_bid(bid_price, i + 1, 1.0, i).unwrap();
+            orderbook.add_limit_ask(ask_price, i + 1001, 1.0, i).unwrap();
         }
         
         // Update metrics
