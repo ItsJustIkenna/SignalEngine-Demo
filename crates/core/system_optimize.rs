@@ -124,7 +124,7 @@ pub fn enable_huge_pages() -> Result<(), String> {
     Err("Huge pages not supported on this platform".to_string())
 }
 
-/// Optimize current thread for ultra-low latency
+/// Optimize current thread for low latency
 /// 
 /// Sets highest priority and pins to specified core.
 /// 
@@ -198,7 +198,7 @@ impl SystemOptimization {
         Ok(())
     }
     
-    /// Create configuration for ultra-low latency trading
+    /// Create configuration for low-latency trading
     pub fn for_trading(core_id: Option<usize>) -> Self {
         Self {
             high_priority: true,

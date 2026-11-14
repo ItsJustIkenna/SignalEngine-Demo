@@ -95,7 +95,7 @@ w10 = 0.5
 w11 = 0.5
 
 [execution]
-# Ultra-low latency execution settings
+# Execution settings
 use_hardware_timestamps = true
 enable_simd_optimizations = true
 enable_memory_pools = true

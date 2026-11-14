@@ -1,4 +1,4 @@
-// Ultra-low latency signal dispatcher for nanosecond trading
+// Low-latency signal dispatcher
 use ultra_signal::{Signal, UltraFastSignalQueue, SignalAction};
 use signalengine::{
     get_rdtsc, rdtsc_duration_ns, init_rdtsc, AtomicMetrics,
@@ -10,7 +10,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::thread;
 
-/// Lock-free signal dispatcher optimized for ultra-low latency
+/// Lock-free signal dispatcher optimized for low latency
 pub struct UltraFastSignalDispatcher {
     // Lock-free signal queues for different priority levels
     urgent_queue: Arc<UltraFastSignalQueue>,
@@ -52,7 +52,7 @@ impl UltraFastSignalDispatcher {
         })
     }
 
-        /// Ultra-fast batch signal processing using pre-allocated buffer
+        /// Batch signal processing using pre-allocated buffer
     pub fn process_batch_signals(&mut self) -> u64 {
         if self.batch_buffer.is_empty() {
             self.batch_buffer.reserve(32); // Ensure capacity
@@ -141,7 +141,7 @@ impl UltraFastSignalDispatcher {
         let is_running = Arc::new(AtomicBool::new(true));
 
         thread::spawn(move || {
-            // Apply system optimizations for ultra-low latency
+            // Apply system optimizations for low latency
             // Pin to core 0 for consistent performance (modify as needed)
             let optimization = SystemOptimization::for_trading(Some(0));
             if let Err(e) = optimization.apply() {
@@ -214,7 +214,7 @@ impl UltraFastSignalDispatcher {
         })
     }
 
-    /// Dispatch signal to appropriate handlers with ultra-fast routing
+    /// Dispatch signal to appropriate handlers with routing
     #[inline]
     fn dispatch_signal_fast(
         signal: &Signal,
@@ -264,7 +264,7 @@ impl UltraFastSignalDispatcher {
         }
     }
 
-    /// Submit signal for ultra-fast processing
+    /// Submit signal for processing
     pub fn submit_signal(&self, signal: Signal) -> Result<(), Signal> {
         if signal.is_urgent() {
             self.urgent_queue.try_push(signal)

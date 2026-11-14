@@ -24,7 +24,7 @@ strategyhandler = { path = "../strategyhandler" }
 tokio = "1.44.1"
 ultra_signal = { path = "../signal" }
 
-# Ultra-low latency logging
+# Logging
 ultra-logger = { workspace = true }
 tracing = "0.1.40"
 

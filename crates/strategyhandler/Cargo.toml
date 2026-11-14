@@ -22,6 +22,6 @@ uuid = "1.17.0"
 dashmap = "6.1.0"
 ultra_signal = { path = "../signal" }
 signal_dispatcher = { path = "../signaldispatcher" }
-# Ultra-low latency logging
+# Logging
 ultra-logger = { workspace = true }
 tracing = "0.1.40"

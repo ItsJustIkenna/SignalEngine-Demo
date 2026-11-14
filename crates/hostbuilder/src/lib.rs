@@ -45,7 +45,7 @@ impl SignalEngineUltraOrderManager {
     ) -> Result<OrderResult> {
         // TODO: Implement actual order processing when ultra_production_order_manager is available
         Ok(OrderResult {
-            processing_time_ns: 600, // simulate 0.6μs
+            processing_time_ns: 600, // stub processing time in ns
             success: true,
         })
     }
@@ -104,7 +104,7 @@ pub struct HostedObject {
     signal_rx: Option<Receiver<Signal>>,
     // Strategy manager
     strategy_manager: Option<StrategyManager>,
-    // Phase 2: Ultra-fast order management (853x faster)
+    // Phase 2: order management 
     ultra_order_manager: Option<Arc<SignalEngineUltraOrderManager>>,
 }
 
@@ -269,7 +269,7 @@ impl HostedObject {
         let config = Config::default();
         self.strategy_manager = Some(Self::create_strategy_manager(&config)?);
         
-        // Phase 2: Initialize ultra-fast order manager (853x faster processing)
+        // Phase 2: Initialize order manager 
         info!("🚀 Initializing Phase 2 Ultra-Fast Order Manager...");
         let ultra_order_manager = SignalEngineUltraOrderManager::new().await?;
         self.ultra_order_manager = Some(Arc::new(ultra_order_manager));
@@ -317,7 +317,7 @@ impl HostedObject {
         println!("Initializing ExecutionHandler...");
         execution_handler.initialize_optimizations().await?;
         
-        // Set up ultra-fast signal routing using Phase 2 order manager
+        // Set up signal routing using Phase 2 order manager
         if let Some(signal_rx) = self.signal_rx.take() {
             let ultra_order_manager = self.ultra_order_manager.clone().unwrap();
             tokio::spawn(async move {
@@ -348,7 +348,7 @@ impl HostedObject {
                         OrderPriority::Normal
                     };
                     
-                    // Execute ultra-fast order (0.6μs target)
+                    // Execute order
                     match ultra_order_manager.process_signal_order(
                         &symbol,
                         &exchange,
@@ -360,7 +360,7 @@ impl HostedObject {
                         priority
                     ).await {
                         Ok(result) => {
-                            // Log ultra-fast performance every 100 orders
+                            // Log performance every 100 orders
                             if signal_count % 100 == 0 {
                                 info!("⚡ Phase 2 ultra-fast order {}: {}ns ({:.3}μs) - Success: {}", 
                                       signal_count, 

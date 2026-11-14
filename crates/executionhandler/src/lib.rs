@@ -123,7 +123,7 @@ impl DatabaseExecutionPersistence for InMemoryExecutionDatabase {
     }
 }
 
-/// Ultra-low latency multi-exchange execution handler
+/// Low-latency multi-exchange execution handler
 #[derive(Clone)]
 pub struct UltraLowLatencyExecutionHandler {
     connectors: Arc<RwLock<HashMap<String, Box<dyn ExchangeConnector>>>>,

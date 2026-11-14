@@ -20,7 +20,7 @@ use crate::optimizations::{
     simd_metrics::VectorizedMetrics,
 };
 
-/// Ultra-low latency Kraken exchange connector
+/// Low-latency Kraken exchange connector
 pub struct KrakenConnector {
     exchange_name: String,
     config: Option<ExchangeConfig>,

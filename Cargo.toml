@@ -19,7 +19,7 @@ members = [
 resolver = "2"
 
 [workspace.dependencies]
-# Ultra-low latency logging engine
+# Logging engine
 ultra-logger = { path = "../LoggingEngine/ultra-logger" }
 
 # Ultra-Fast Production Optimizations

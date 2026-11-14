@@ -1,6 +1,6 @@
-//! Ultra-High Performance Strategy System for SignalEngine
+//! Strategy system for SignalEngine
 //!
-//! This module provides optimized strategy management for microsecond-latency live trading.
+//! This module provides optimized strategy management.
 //! Key optimizations:
 //! - Lock-free operations where possible
 //! - Zero-allocation hot paths
@@ -37,7 +37,7 @@ pub struct StrategyMetadata {
     pub symbols: Vec<SymbolHash>,  // Pre-hashed symbols for O(1) matching
 }
 
-/// Ultra-fast strategy registry using lock-free operations
+/// Strategy registry using lock-free operations
 pub struct StrategyRegistry {
     // Lock-free concurrent hashmap for O(1) lookups
     strategies: DashMap<StrategyId, StrategyMetadata>,
@@ -94,7 +94,7 @@ impl StrategyRegistry {
         // For now, focusing on the hot path optimization
     }
     
-    /// Ultra-fast strategy lookup by ID (lock-free)
+    /// Strategy lookup by ID (lock-free)
     pub fn get_by_id(&self, id: StrategyId) -> Option<StrategyMetadata> {
         self.strategies.get(&id).map(|entry| entry.value().clone())
     }

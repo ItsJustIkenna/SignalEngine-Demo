@@ -2,7 +2,7 @@ use async_trait::async_trait;
 use crate::signal::Signal;
 use crate::core::types::*;
 
-/// Core trait that all exchanges must implement for ultra-low latency execution
+/// Core trait that all exchanges must implement for low-latency execution
 #[async_trait]
 pub trait ExchangeConnector: Send + Sync {
     /// Get the exchange name (e.g., "Kraken", "Binance", "Coinbase")

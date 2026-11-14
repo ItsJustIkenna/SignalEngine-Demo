@@ -8,7 +8,7 @@ anyhow = "1.0.97"
 hostbuilder = { path = "../crates/hostbuilder" }
 signalengine = { package = "signalengine-core", path = "../crates/core" }
 tokio = "1.44.1"
-# Ultra-low latency logging
+# Logging
 ultra-logger = { workspace = true }
 
 [dev-dependencies]

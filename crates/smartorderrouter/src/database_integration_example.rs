@@ -79,7 +79,7 @@ pub async fn setup_smart_router_with_database() -> Result<UltraFastSmartOrderRou
     // Create metrics aggregator with correct parameters
     let metrics_aggregator = Arc::new(ExchangeMetricsAggregator::new(1000, 100));
     
-    // Create the ultra-fast smart order router
+    // Create the smart order router
     let router = UltraFastSmartOrderRouter::new(metrics_aggregator);
     
     // In a real implementation, you would:
