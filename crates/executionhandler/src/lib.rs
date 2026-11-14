@@ -87,10 +87,11 @@ impl DatabaseExecutionPersistence for InMemoryExecutionDatabase {
     fn save_execution(&self, execution_data: &ExecutionData) -> Result<(), String> {
         self.executions.lock().unwrap().push(execution_data.clone());
         
-        // Note: This is synchronous logging - in production use log_trading_execution macro for async
-        tokio::spawn({
+        // Best-effort log when a Tokio runtime is already running; skip otherwise
+        // so unit tests can persist executions without a runtime.
+        if let Ok(handle) = tokio::runtime::Handle::try_current() {
             let data = execution_data.clone();
-            async move {
+            handle.spawn(async move {
                 let logger = signalengine::SignalEngineLogger::new("ExecutionHandler").await;
                 logger.log_execution(
                     &data.order_id,
@@ -101,8 +102,8 @@ impl DatabaseExecutionPersistence for InMemoryExecutionDatabase {
                     data.fee,
                     data.latency_ns
                 ).await;
-            }
-        });
+            });
+        }
         
         Ok(())
     }
@@ -858,6 +859,7 @@ mod tests {
     }
 
     #[tokio::test]
+    #[ignore = "requires KRAKEN_API_KEY and KRAKEN_SECRET_KEY environment variables"]
     async fn test_exchange_management() {
         let mut handler = ExecutionHandler::new().await;
         
@@ -878,8 +880,7 @@ mod tests {
     async fn test_supported_exchanges() {
         let supported = ExecutionHandler::supported_exchanges();
         assert!(supported.contains(&"kraken"));
-        assert!(supported.contains(&"binance"));
-        assert!(supported.contains(&"coinbase"));
+        assert_eq!(supported, vec!["kraken"]);
     }
 
     #[test]

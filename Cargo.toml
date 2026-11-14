@@ -15,12 +15,15 @@ members = [
     "crates/strategyhandler",
     "crates/signal",
     "crates/signaldispatcher",
+    "crates/ultra-logger",
+    "crates/protocol",
+    "crates/subscriber",
 ]
 resolver = "2"
 
 [workspace.dependencies]
 # Logging engine
-ultra-logger = { path = "../LoggingEngine/ultra-logger" }
+ultra-logger = { path = "crates/ultra-logger" }
 
 # Ultra-Fast Production Optimizations
 crossbeam = "0.8"

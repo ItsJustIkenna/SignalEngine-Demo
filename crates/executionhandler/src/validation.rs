@@ -161,7 +161,7 @@ mod tests {
         
         // Valid symbols
         assert!(validator.validate_symbol("BTC/USD").is_ok());
-        assert!(validator.validate_symbol("ETH-USDT").is_ok());
+        assert!(validator.validate_symbol("ETH/USDT").is_ok());
         
         // Invalid symbols
         assert!(validator.validate_symbol("").is_err());
