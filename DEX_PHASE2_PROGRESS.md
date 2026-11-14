@@ -251,8 +251,7 @@ async fn execute_transaction(&self, tx_data: TransactionData) -> Result<String> 
 ### 5. Confirmation Monitoring (1 hour)
 ```rust
 async fn wait_for_confirmation(&self, tx_digest: &str) -> Result<TransactionStatus> {
-    // Poll sui_getTransactionBlock every 100ms
-    // Wait until status is confirmed (~400ms typical)
+    // Poll sui_getTransactionBlock until confirmed
     // Parse effects for gas used, success status
 }
 ```
@@ -266,14 +265,14 @@ async fn wait_for_confirmation(&self, tx_digest: &str) -> Result<TransactionStat
 ## 📈 Performance Targets
 
 ### SUI Network Performance
-- **Finality**: ~400ms (30x faster than Ethereum)
-- **Gas Cost**: ~$0.0001 per transaction (50,000x cheaper)
-- **Throughput**: Parallel execution (no sequential bottlenecks)
+- **Finality**: Sui network confirmation (not measured here)
+- **Gas cost**: typically low relative to Ethereum (not measured here)
+- **Execution model**: parallel execution (no sequential bottlenecks)
 
-### HFT Market Making Readiness
-- **Current Infra**: 313K orders/sec, 2.33μs latency on Kraken
-- **DEX Target**: <500ms end-to-end (network RTT + finality)
-- **Cross-Venue Arb**: Kraken ↔ SUI DEXs with sub-second execution
+### Market making notes
+- **Measured (signal-to-order)**: under 15 μs p99, in-process, 8-vCPU VM
+- **DEX path**: end-to-end confirmation time is not measured here
+- **Cross-venue**: Kraken ↔ SUI DEXs (no measured end-to-end figure)
 
 ### Fee Comparison
 - **Kraken CEX**: 0.16% maker, 0.26% taker
@@ -282,7 +281,7 @@ async fn wait_for_confirmation(&self, tx_digest: &str) -> Result<TransactionStat
 
 ## 🔒 Security Considerations
 
-### Production Requirements
+### Key management requirements
 1. **Encrypted Private Keys**: Never store plaintext keys
 2. **Key Management**: Use HSM or secure enclave
 3. **Rate Limiting**: Avoid RPC node bans
@@ -293,7 +292,7 @@ async fn wait_for_confirmation(&self, tx_digest: &str) -> Result<TransactionStat
 ### Current Test State
 - ⚠️ Generated test keys are for devnet only
 - ⚠️ Never use devnet keys on mainnet
-- ⚠️ Production keys require secure generation and storage
+- ⚠️ Mainnet keys require secure generation and storage
 
 ## 📚 References
 

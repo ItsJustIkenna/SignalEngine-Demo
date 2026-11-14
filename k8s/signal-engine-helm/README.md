@@ -1,18 +1,20 @@
 # SignalEngine Helm Chart
 
-This Helm chart deploys the SignalEngine ultra-low latency trading platform on Kubernetes.
+This Helm chart deploys SignalEngine on Kubernetes.
 
 ## Overview
 
-The SignalEngine is a high-frequency trading (HFT) platform built in Rust, designed for sub-microsecond signal processing and ultra-low latency order execution across multiple cryptocurrency exchanges.
+SignalEngine is a trading signal processing engine built in Rust, designed for low-latency signal-to-order paths across multiple cryptocurrency exchanges.
+
+Measured on an 8-vCPU VM, in-process: signal-to-order under 15 μs p99.
 
 ## Features
 
-- ⚡ **Ultra-Low Latency**: Sub-microsecond signal processing
+- ⚡ **Low latency**: designed for low-latency signal processing
 - 🏗️ **High Availability**: Multi-replica deployment with auto-scaling
 - 🔒 **Security Hardened**: Network policies, RBAC, pod security contexts
 - 📊 **Comprehensive Monitoring**: Prometheus metrics, Grafana dashboards, alerting
-- 🔄 **Multi-Environment**: Dev, QA, and Production configurations
+- 🔄 **Multi-Environment**: Dev, QA, and prod values files
 - 💾 **Persistent Storage**: Configurable storage classes and sizes
 - 🌐 **Multi-Exchange**: Binance, Coinbase, Kraken support
 - 🔍 **Observability**: Distributed tracing with Jaeger
@@ -39,7 +41,7 @@ helm install signal-engine signal-engine/signal-engine-helm \
   --create-namespace \
   --values values-dev.yaml
 
-# Install for production
+# Install with prod values
 helm install signal-engine signal-engine/signal-engine-helm \
   --namespace trading-prod \
   --create-namespace \
@@ -87,11 +89,11 @@ helm install signal-engine . \
 - Sandbox exchanges
 - Load testing configured
 
-#### Production (`values-prod.yaml`)
+#### Prod values (`values-prod.yaml`)
 - 3+ replicas with auto-scaling
 - High resource allocation
 - All security features enabled
-- Production exchanges
+- Exchange endpoints from the prod values file
 - Comprehensive monitoring
 
 ### Resource Management
@@ -179,7 +181,7 @@ helm install signal-engine . \
   --values values-dev.yaml
 ```
 
-### Production Environment
+### Prod values example
 
 ```bash
 helm install signal-engine . \
@@ -223,8 +225,8 @@ Pre-configured dashboards available:
 ### Alerting Rules
 
 Built-in alerting for:
-- Signal processing latency > 1ms
-- Signal throughput < 1000/sec
+- Signal processing latency
+- Signal throughput
 - Exchange connection failures
 - High error rates
 - Resource exhaustion
@@ -321,7 +323,7 @@ kubectl exec -it deployment/signal-engine -c debug-sidecar -n <namespace> -- /bi
 
 ## Security Considerations
 
-### Production Security Checklist
+### Security Checklist
 
 - [ ] Enable network policies
 - [ ] Configure pod security contexts

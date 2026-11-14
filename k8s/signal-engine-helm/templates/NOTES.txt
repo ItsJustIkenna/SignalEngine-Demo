@@ -1,4 +1,4 @@
-🚀 SignalEngine Ultra-Low Latency Trading Platform
+🚀 SignalEngine
 
 {{- if .Values.ingress.enabled }}
 📊 Your SignalEngine is accessible at:
@@ -94,18 +94,18 @@ kubectl exec -it deployment/{{ include "signal-engine-helm.fullname" . }} -c deb
 {{- end }}
 
 {{- if eq .Values.global.environment "prod" }}
-🏭 Production Checklist:
+Checklist (environment=prod):
 {{- if not .Values.resources.limits }}
 ⚠️  Resource limits not set - consider setting CPU/Memory limits
 {{- end }}
 {{- if not .Values.autoscaling.enabled }}
-⚠️  Autoscaling disabled - enable for production workloads
+⚠️  Autoscaling disabled - consider enabling autoscaling
 {{- end }}
 {{- if not .Values.monitoring.prometheus.enabled }}
-⚠️  Prometheus monitoring disabled - enable for production monitoring
+⚠️  Prometheus monitoring disabled - consider enabling Prometheus
 {{- end }}
 {{- if not .Values.backup.enabled }}
-⚠️  Backup disabled - enable for production data protection
+⚠️  Backup disabled - consider enabling backups
 {{- end }}
 {{- end }}
 
@@ -129,8 +129,7 @@ kubectl exec -it deployment/{{ include "signal-engine-helm.fullname" . }} -c deb
 - Monitoring is enabled for performance testing
 {{- else if eq .Values.global.environment "prod" }}
 
-🏭 Production Environment:
-- All production features are enabled
+Environment: prod
 - High availability configuration is active
 - Monitoring and alerting are configured
 - Regular backups are scheduled
