@@ -299,7 +299,7 @@ pub struct UltraFastSmartOrderRouter {
     is_running: Arc<AtomicBool>,
 }
 
-/// Ultra-high performance atomic routing statistics
+/// Atomic routing statistics
 #[derive(Debug)]
 pub struct AtomicRoutingStats {
     pub routes_created: CachePadded<AtomicU64>,
@@ -477,7 +477,7 @@ impl UltraFastSmartOrderRouter {
         self.routing_rules.insert(rule.symbol.clone(), rule);
     }
     
-    /// Create and route a smart order with ultra-low latency
+    /// Create and route a smart order with low latency
     #[inline(always)]
     #[allow(clippy::too_many_arguments)]
     pub fn create_smart_route(

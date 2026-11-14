@@ -1,9 +1,9 @@
 apiVersion: v2
 name: signal-engine-helm
-description: Ultra-Low Latency Trading Signal Engine Helm Chart for Kubernetes
+description: SignalEngine Helm chart for Kubernetes
 
-# This is a production-ready Helm chart for deploying the SignalEngine
-# trading platform with enterprise-grade features including:
+# This is a Helm chart for deploying the SignalEngine
+# trading platform with features including:
 # - Multi-environment support (dev/qa/prod)
 # - Advanced autoscaling and resource management
 # - Security hardening and RBAC

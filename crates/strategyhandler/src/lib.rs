@@ -1,4 +1,4 @@
-// Consolidated Ultra-High Performance Strategy Handler
+// Consolidated strategy handler
 // Combines lock-free operations with comprehensive strategy management
 
 pub mod strategies;
@@ -230,7 +230,7 @@ pub struct StrategyConfig {
     pub parameters: HashMap<String, serde_json::Value>,
 }
 
-/// Hot state for cache-aligned ultra-fast strategy processing  
+/// Hot state for cache-aligned strategy processing  
 #[repr(C, align(64))] // Cache line aligned
 struct HotStrategyState {
     last_signal_time: AtomicU64,
@@ -248,19 +248,19 @@ impl HotStrategyState {
     }
 }
 
-/// Ultra-High Performance Strategy Engine
-/// 33-54x faster than traditional HashMap+RwLock approach
+/// Strategy engine
+/// 
 pub struct UltraStrategyEngine {
     // Lock-free strategy registry
     _registry: Arc<StrategyRegistry>,
     
-    // Lock-free hot state cache (DashMap for ultra-fast concurrent access)
+    // Lock-free hot state cache (DashMap for concurrent access)
     hot_state: DashMap<StrategyId, HotStrategyState>,
     
     // Pre-allocated signal buffers (lock-free)
     signal_buffers: DashMap<StrategyId, Vec<Signal>>,
     
-    // Atomic counters for ultra-fast metrics
+    // Atomic counters for metrics
     strategies_executed: AtomicU64,
     signals_generated: AtomicU64,
     avg_latency_ns: AtomicU64,
@@ -312,7 +312,7 @@ impl UltraStrategyEngine {
         }
     }
 
-    /// Ultra-fast signal generation (zero allocation hot path)
+    /// Signal generation (zero allocation hot path)
     #[inline(always)]
     pub fn generate_signals_fast(
         &self,
@@ -407,7 +407,7 @@ impl UltraStrategyEngine {
         2 // Return number of signals generated
     }
 
-    /// Process multiple symbols in batch with ultra-low latency
+    /// Process multiple symbols in batch with low latency
     pub fn process_batch(
         &self,
         symbol_data: &[(SymbolHash, f64, u64)], // (symbol, price, timestamp)
@@ -604,7 +604,7 @@ impl StrategyManager {
         Ok(all_signals)
     }
 
-    /// Process market data with ultra-high performance engine
+    /// Process market data with engine
     pub fn process_market_data_ultra_fast(&self, strategy_id: StrategyId, market_data: &MarketData) -> Vec<Signal> {
         let symbol_hash = SYMBOLS.btc_usd; // Use appropriate symbol hash
         self.ultra_engine.process_batch(

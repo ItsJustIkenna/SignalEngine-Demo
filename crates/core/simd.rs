@@ -1,4 +1,4 @@
-// SIMD Acceleration Module for Ultra-Fast Batch Processing
+// SIMD Acceleration Module for Batch Processing
 //
 // Provides AVX2/SSE2 optimized operations for common trading calculations:
 // - Price differences and returns
@@ -6,7 +6,7 @@
 // - Standard deviations
 // - Min/Max calculations
 //
-// Performance: 4-8x faster than scalar loops
+// Performance: 
 
 #[cfg(target_arch = "x86_64")]
 use std::arch::x86_64::*;

@@ -1,8 +1,8 @@
-// Ultra-low latency unified signal system
+// Low-latency unified signal system
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::time::Instant;
 
-/// High-precision nanosecond timer for ultra-low latency
+/// High-precision nanosecond timer for low latency
 #[inline]
 pub fn high_precision_timestamp_ns() -> u64 {
     // Use Instant for high-precision timing (monotonic, no system call overhead)
@@ -11,7 +11,7 @@ pub fn high_precision_timestamp_ns() -> u64 {
     start.elapsed().as_nanos() as u64
 }
 
-/// Unified signal type for ultra-low latency trading
+/// Unified signal type for low-latency trading
 /// Optimized for minimal memory footprint and zero-copy operations
 #[repr(C)]
 #[derive(Debug, Clone, Copy)]
@@ -86,7 +86,7 @@ pub enum ExchangeId {
     // ... up to 255 exchanges
 }
 
-// Signal flags for ultra-fast processing
+// Signal flags for processing
 pub mod signal_flags {
     pub const IMMEDIATE_OR_CANCEL: u32 = 1 << 0;
     pub const FILL_OR_KILL: u32 = 1 << 1;
@@ -215,7 +215,7 @@ impl Signal {
     }
 }
 
-/// Pre-computed symbol hash table for ultra-fast lookups
+/// Pre-computed symbol hash table for lookups
 pub struct SymbolHashTable {
     // Static symbol mappings for fastest possible lookups
     pub btc_usd: u64,
@@ -256,7 +256,7 @@ pub const fn hash_symbol(symbol: &str) -> u64 {
 // Global symbol table
 pub static SYMBOLS: SymbolHashTable = SymbolHashTable::new();
 
-/// Lock-free signal queue for ultra-low latency
+/// Lock-free signal queue for low latency
 pub struct UltraFastSignalQueue {
     buffer: *mut Signal,
     capacity: usize,

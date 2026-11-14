@@ -26,7 +26,7 @@ mod tests {
         for i in 0..1000 {
             let handle = tokio::spawn(async move {
                 let _signal = create_test_signal(i);
-                // Simulate ultra-fast processing
+                // Simulate processing
                 tokio::time::sleep(Duration::from_micros(10)).await;
                 i
             });
@@ -119,21 +119,21 @@ mod tests {
     }
 
     fn process_signal(signal: &TestSignal) -> TestSignal {
-        // Simulate ultra-fast signal processing
+        // Simulate signal processing
         let mut processed = signal.clone();
         processed.price *= 1.001; // Minimal processing
         processed
     }
 
     fn route_signal(signal: &TestSignal) -> TestSignal {
-        // Simulate ultra-fast routing decision
+        // Simulate routing decision
         let mut routed = signal.clone();
         routed.quantity *= 0.99; // Minimal routing logic
         routed
     }
 
     fn execute_signal(signal: &TestSignal) -> TestSignal {
-        // Simulate ultra-fast execution
+        // Simulate execution
         let mut executed = signal.clone();
         executed.timestamp += 1; // Minimal execution logic
         executed

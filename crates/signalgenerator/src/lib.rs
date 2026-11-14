@@ -1,4 +1,4 @@
-// Ultra-low latency signal generator optimized for nanosecond trading
+// Low-latency signal generator
 use ultra_signal::{Signal, SignalAction, OrderSide, ExchangeId, SYMBOLS, signal_flags};
 use signalengine::{
     init_rdtsc, 
@@ -30,7 +30,7 @@ pub struct MarketData {
     pub book_pressure: f64, // Bid/Ask volume ratio
 }
 
-/// Ultra-fast signal generator with pre-allocated memory
+/// Signal generator with pre-allocated memory
 #[derive(Debug)]
 pub struct SignalGenerator {
     id: u16,
@@ -74,7 +74,7 @@ impl SignalGenerator {
         }
     }
 
-    /// Ultra-fast signal generation optimized for nanosecond latency
+    /// Signal generation
     /// Returns slice of generated signals without allocation
     pub fn generate_signals_fast(&mut self, market_data: &MarketData) -> &[Signal] {
         self.signal_buffer.clear(); // Reset buffer without deallocation
@@ -82,7 +82,7 @@ impl SignalGenerator {
         // Get pre-computed symbol hash for fastest lookup
         let symbol_hash = self.get_symbol_hash(&market_data.symbol);
         
-        // **MOMENTUM STRATEGY** - Ultra-fast price change detection
+        // **MOMENTUM STRATEGY** - price change detection
         if let Some(momentum) = self.calculate_momentum_fast(&market_data.symbol, market_data.price) {
             
             // Strong bullish momentum - URGENT BUY
@@ -364,7 +364,7 @@ impl SignalGenerator {
     }
 }
 
-/// High-frequency momentum strategy optimized for ultra-low latency
+/// High-frequency momentum strategy optimized for low latency
 #[derive(Debug)]
 pub struct UltraFastMomentumStrategy {
     generator: SignalGenerator,

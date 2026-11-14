@@ -1,7 +1,7 @@
-# SignalEngine Production Configuration Template
-# This template shows production-grade external secret management
+# SignalEngine prod values template
+# This template shows external secret management
 
-# PRODUCTION DEPLOYMENT INSTRUCTIONS:
+# Install instructions:
 # Method 1 - External Secrets (RECOMMENDED):
 #   Setup External Secrets Operator with Vault/AWS Secrets Manager
 #   helm install signal-engine-prod ./k8s/signal-engine/ -f values-prod.yaml.template
@@ -16,7 +16,7 @@ global:
   registry:
     url: "your-prod-registry.azurecr.io"
 
-# Production scaling
+# Scaling
 replicaCount: 3
 
 resources:
@@ -33,7 +33,7 @@ autoscaling:
   maxReplicas: 10
   targetCPUUtilizationPercentage: 70
 
-# External Secrets Configuration (RECOMMENDED for Production)
+# External Secrets Configuration
 externalSecrets:
   enabled: true
   secretStore:
@@ -66,13 +66,13 @@ secrets:
   messageBroker:
     password: ""  # Set via --set-string or external secrets
 
-# Production persistence
+# Persistence
 persistence:
   enabled: true
   size: 100Gi
   storageClass: "premium-ssd"
 
-# Production monitoring
+# Monitoring
 monitoring:
   enabled: true
   prometheus:
@@ -80,7 +80,7 @@ monitoring:
   grafana:
     enabled: true
 
-# Production networking
+# Networking
 ingress:
   enabled: true
   className: "nginx"
@@ -90,7 +90,7 @@ ingress:
   tls:
     enabled: true
 
-# Production Kraken configuration
+# Kraken configuration
 exchanges:
   kraken:
     endpoint: "https://api.kraken.com"

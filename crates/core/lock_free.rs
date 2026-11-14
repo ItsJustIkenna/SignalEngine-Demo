@@ -1,4 +1,4 @@
-// Lock-Free Data Structures for Ultra-Low Latency Trading
+// Lock-Free Data Structures for Low-latency Trading
 //
 // Provides lock-free alternatives to RwLock and Mutex for concurrent access
 // with predictable, bounded latency (no waiting/blocking).

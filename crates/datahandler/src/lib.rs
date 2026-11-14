@@ -1,4 +1,4 @@
-// Ultra-low latency data handler optimized for nanosecond trading
+// Low-latency data handler
 use dashmap::DashMap;
 use dotenv::dotenv;
 use lazy_static::lazy_static;
@@ -16,7 +16,7 @@ use crossbeam::channel::{Sender, Receiver, unbounded};
 use serde::{Serialize, Deserialize};
 // Message broker integration
 
-// **ULTRA-LOW LATENCY OPTIMIZATION**: Lock-free orderbook storage
+// Optimization: Lock-free orderbook storage
 // RwLock allows multiple concurrent readers with minimal contention
 lazy_static! {
     pub static ref ORDERBOOKS: DashMap<(String, String), Arc<RwLock<Orderbook>>> = DashMap::new();
@@ -74,9 +74,9 @@ pub trait DataHandlerTrait {
     fn get_orderbook(&self, symbol: &str, exchange: &str) -> Option<Arc<RwLock<Orderbook>>>;
 }
 
-/// Ultra-fast data handler with lock-free optimizations
+/// Data handler with lock-free optimizations
 pub struct DataHandler {
-    // Market data channels for ultra-fast distribution
+    // Market data channels for distribution
     market_data_sender: Sender<MarketData>,
     market_data_receiver: Receiver<MarketData>,
     
@@ -144,7 +144,7 @@ impl DataHandler {
         self.strategy_signal_sender = Some(sender);
     }
 
-    /// Get or create orderbook with ultra-fast access
+    /// Get or create orderbook with access
     /// **PERFORMANCE CRITICAL**: Uses RwLock for minimal read contention
     pub fn get_or_create_orderbook(&self, symbol: &str, exchange: &str) -> Arc<RwLock<Orderbook>> {
         let key = (symbol.to_string(), exchange.to_string());
@@ -168,7 +168,7 @@ impl DataHandler {
         orderbook
     }
 
-    /// Ultra-fast orderbook update with minimal locking
+    /// Orderbook update with minimal locking
     #[inline]
     pub fn update_orderbook_fast(
         &self, 
@@ -233,7 +233,7 @@ impl DataHandler {
     pub fn generate_market_data(&self, symbol: &str, exchange: &str) -> Option<MarketData> {
         let orderbook = self.get_or_create_orderbook(symbol, exchange);
         
-        // Use read lock for ultra-fast access (allows concurrent reads)
+        // Use read lock for access (allows concurrent reads)
         if let Ok(ob) = orderbook.read() {
             if let Ok(metrics) = ob.metrics() {
                 if metrics.best_bid > 0.0 && metrics.best_ask > 0.0 {
@@ -457,7 +457,7 @@ impl DataHandlerTrait for DataHandler {
     }
 }
 
-/// Ultra-fast market data aggregator
+/// Market data aggregator
 pub struct MarketDataAggregator {
     data_handler: DataHandler,
     aggregated_data: DashMap<String, MarketData>, // Symbol -> Latest market data
@@ -513,7 +513,7 @@ impl MarketDataAggregator {
     }
 }
 
-/// Ultra-fast price feed simulator for testing
+/// Price feed simulator for testing
 pub struct PriceFeedSimulator {
     symbols: Vec<String>,
     base_prices: std::collections::HashMap<String, f64>,

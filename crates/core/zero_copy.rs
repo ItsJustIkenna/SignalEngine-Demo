@@ -1,4 +1,4 @@
-// Zero-Copy Message Passing for Ultra-Low Latency
+// Zero-Copy Message Passing
 //
 // Eliminates memory copies by using Arc-based shared ownership
 // and custom arena allocators for signal processing.

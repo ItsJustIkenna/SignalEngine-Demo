@@ -1,4 +1,4 @@
-// RDTSC Hardware Timestamp Module for Ultra-Low Latency
+// RDTSC Hardware Timestamp Module
 // Provides sub-nanosecond precision timing across x86_64 and ARM64
 
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -169,7 +169,7 @@ mod tests {
         
         println!("RDTSC overhead: {} cycles ({} ns)", median_overhead, overhead_ns);
         
-        // RDTSC should have very low overhead (<100ns)
+        // RDTSC should have very low overhead
         assert!(overhead_ns < 100, "RDTSC overhead too high: {}ns", overhead_ns);
     }
 }
