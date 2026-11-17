@@ -270,7 +270,6 @@ async fn wait_for_confirmation(&self, tx_digest: &str) -> Result<TransactionStat
 - **Execution model**: parallel execution (no sequential bottlenecks)
 
 ### Market making notes
-- **Measured (signal-to-order)**: under 15 μs p99, in-process, 8-vCPU VM
 - **DEX path**: end-to-end confirmation time is not measured here
 - **Cross-venue**: Kraken ↔ SUI DEXs (no measured end-to-end figure)
 

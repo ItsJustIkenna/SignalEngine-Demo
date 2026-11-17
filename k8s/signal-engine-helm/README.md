@@ -4,9 +4,9 @@ This Helm chart deploys SignalEngine on Kubernetes.
 
 ## Overview
 
-SignalEngine is a trading signal processing engine built in Rust, designed for low-latency signal-to-order paths across multiple cryptocurrency exchanges.
+SignalEngine is a trading signal processing engine built in Rust for multiple cryptocurrency exchanges.
 
-Measured on an 8-vCPU VM, in-process: signal-to-order under 15 μs p99.
+No benchmark results are published for this demo.
 
 ## Features
 

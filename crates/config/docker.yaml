@@ -33,7 +33,7 @@ topic_routing:
 
 strategies:
   - id: "momentum_strategy"
-    name: "Ultra Fast Momentum"
+    name: "Momentum"
     strategy_type: "momentum"
     enabled: true
     symbols: ["BTC/USD", "ETH/USD"]

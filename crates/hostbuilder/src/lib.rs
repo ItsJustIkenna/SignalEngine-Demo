@@ -273,7 +273,7 @@ impl HostedObject {
         info!("Initializing order manager...");
         let order_manager = SignalOrderManager::new().await?;
         self.order_manager = Some(Arc::new(order_manager));
-        info!("Order manager initialized (measured signal-to-order <15 μs p99 in-process, 8-vCPU VM)");
+        info!("Order manager initialized");
         
         // Initialize default strategies
         self.initialize_default_strategies().await?;
@@ -321,7 +321,7 @@ impl HostedObject {
         if let Some(signal_rx) = self.signal_rx.take() {
             let order_manager = self.order_manager.clone().unwrap();
             tokio::spawn(async move {
-                info!("Starting signal processing (measured signal-to-order <15 μs p99 in-process, 8-vCPU VM)");
+                info!("Starting signal processing");
                 let mut signal_count = 0u64;
                 
                 while let Ok(signal) = signal_rx.recv() {

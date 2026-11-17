@@ -4,11 +4,11 @@
 
 ## Overview
 
-Trading signal processing engine built in Rust, designed for low-latency signal-to-order paths.
+Trading signal processing engine built in Rust for generating signals and routing orders.
 
 ## Performance
 
-Measured on an 8-vCPU VM, in-process: signal-to-order under 15 μs p99.
+No benchmark results are published for this demo. Treat any latency or throughput figure as unmeasured until you run your own benchmarks.
 
 ## Features
 

@@ -40,10 +40,10 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_CONTAINER_REGISTRY: "prodtradingbotregistry"
+  AZURE_CONTAINER_REGISTRY: "your-acr-name"
   CONTAINER_NAME: "signal-engine"
-  RESOURCE_GROUP: "prod-aks-trading-bot-rg"
-  CLUSTER_NAME: "prod-trading-bot-cluster"
+  RESOURCE_GROUP: "your-resource-group"
+  CLUSTER_NAME: "your-aks-cluster"
   CHART_PATH: "./signal-engine-helm"
   BASE_CHART_OVERRIDE_PATH: "./signal-engine-helm/values.yaml"
   ENV_CHART_OVERRIDE_PATH: "./signal-engine-helm/values-prod.yaml"
