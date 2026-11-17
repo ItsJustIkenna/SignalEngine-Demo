@@ -119,7 +119,7 @@ sui-json-rpc-types = "1.0"
 - ✅ **Familiar orderbook interface** - Just like Kraken, not AMM pools
 - ✅ **True limit orders** - Place buy/sell at specific prices
 - ✅ Sui network confirmation (not measured here)
-- ✅ **Cross-venue arbitrage** - Run same Avellaneda-Stoikov on Kraken AND DeepBook
+- ✅ **Cross-venue arbitrage** - Run the same market-making strategy on Kraken AND DeepBook
 - ✅ **Lower fees** - 0.1% maker (vs 0.3% AMM)
 - ✅ **No IL risk** - Pure market making, not liquidity provision
 
@@ -236,7 +236,7 @@ sui-json-rpc-types = "1.0"
    - Gas price monitoring
 
 3. **Strategy integration:**
-   - Update Avellaneda-Stoikov to support DEX venues
+   - Update strategies to support DEX venues
    - Add cross-venue arbitrage detection (Kraken ↔ DeepBook)
    - Implement inventory balancing across CEX/DEX
 
@@ -246,48 +246,6 @@ sui-json-rpc-types = "1.0"
 - Liquidity aggregation across SUI DEXs
 - Flash loan integration (capital efficiency)
 - Cross-chain bridges (Wormhole, etc.)
-
----
-
-## 💰 Business Impact
-
-**Current Setup:**
-- Market making on Kraken (CEX)
-- Co-located server
-- Measured on an 8-vCPU VM, in-process: signal-to-order under 15 μs p99
-- Avellaneda-Stoikov strategy
-
-**With SUI Integration:**
-1. **Cross-venue arbitrage:**
-   - Kraken CEX ↔ DeepBook DEX
-   - Capture spread differences
-   - Round-trip confirmation time is not measured here
-
-2. **Deeper liquidity:**
-   - Access SUI's $500M+ TVL
-   - Trade pairs not on Kraken
-   - Geographic arbitrage (Asia vs US)
-
-3. **Lower costs:**
-   - SUI gas: ~$0.00005/order
-   - Kraken fees: 0.16% maker
-   - DeepBook fees: 0.1% maker
-   - **Net savings:** 0.06% per trade
-
-4. **24/7 uptime:**
-   - No exchange downtime (decentralized)
-   - No KYC/AML restrictions
-   - No withdrawal limits
-
-**ROI Calculation:**
-```
-Daily volume: 100 BTC ($6M)
-Cost savings: 0.06% = $3,600/day
-Annual: $1.3M additional profit
-
-Development cost: 40 hours × $200/hr = $8,000
-Payback period: 2.2 days
-```
 
 ---
 

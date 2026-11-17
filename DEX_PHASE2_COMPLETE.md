@@ -334,7 +334,7 @@ cargo run --bin signal_engine -- test-arbitrage \
 
 ## Performance Characteristics
 
-Measured on an 8-vCPU VM, in-process: signal-to-order under 15 μs p99. DEX confirmation times are not measured here.
+No latency figures are published for this demo; DEX confirmation times are not measured here.
 
 ### Cetus (AMM)
 - **Type**: Concentrated Liquidity Market Maker (CLMM)
