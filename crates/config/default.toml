@@ -16,11 +16,8 @@ username = "trading_user"
 
 # Topics for subscribing to market data and portfolio updates
 subscribe_topics = [
-    "market.binance.btcusd",
-    "market.binance.ethusd", 
     "market.kraken.btcusd",
     "market.kraken.ethusd",
-    "portfolio.binance",
     "portfolio.kraken",
     "portfolio.updates",
     "wallet.balances"
@@ -41,22 +38,6 @@ enabled = true
 api_url = "https://api.kraken.com"
 websocket_url = "wss://ws.kraken.com"
 # Set KRAKEN_API_KEY and KRAKEN_SECRET_KEY environment variables
-rate_limit_requests_per_second = 10
-timeout_ms = 5000
-
-[exchanges.binance]
-enabled = false  # Disabled by default, requires API keys
-api_url = "https://api.binance.com"
-websocket_url = "wss://stream.binance.com:9443"
-# Set BINANCE_API_KEY and BINANCE_SECRET_KEY environment variables  
-rate_limit_requests_per_second = 20
-timeout_ms = 3000
-
-[exchanges.coinbase]
-enabled = false  # Disabled by default, requires API keys
-api_url = "https://api.exchange.coinbase.com"
-websocket_url = "wss://ws-feed.exchange.coinbase.com"
-# Set COINBASE_API_KEY, COINBASE_SECRET_KEY, COINBASE_PASSPHRASE environment variables
 rate_limit_requests_per_second = 10
 timeout_ms = 5000
 

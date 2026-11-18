@@ -16,7 +16,7 @@ No benchmark results are published for this demo.
 - 📊 **Comprehensive Monitoring**: Prometheus metrics, Grafana dashboards, alerting
 - 🔄 **Multi-Environment**: Dev, QA, and prod values files
 - 💾 **Persistent Storage**: Configurable storage classes and sizes
-- 🌐 **Multi-Exchange**: Binance, Coinbase, Kraken support
+- 🌐 **Exchange adapter**: Kraken
 - 🔍 **Observability**: Distributed tracing with Jaeger
 
 ## Quick Start
@@ -298,7 +298,7 @@ dnsConfig:
    kubectl get networkpolicy -n <namespace>
    
    # Verify DNS resolution
-   kubectl exec -it <pod-name> -- nslookup api.binance.com
+   kubectl exec -it <pod-name> -- nslookup api.kraken.com
    ```
 
 ### Debugging Commands
@@ -346,8 +346,8 @@ metadata:
   name: signal-engine-secrets
 type: Opaque
 stringData:
-  BINANCE_API_KEY: "your-api-key"
-  BINANCE_SECRET_KEY: "your-secret-key"
+  KRAKEN_API_KEY: "your-api-key"
+  KRAKEN_SECRET_KEY: "your-secret-key"
   DATABASE_PASSWORD: "your-db-password"
 ```
 

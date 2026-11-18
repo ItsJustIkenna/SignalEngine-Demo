@@ -130,8 +130,6 @@ impl DataHandler {
                 "ADA/USD".to_string(),
             ],
             exchanges: vec![
-                "binance".to_string(),
-                "coinbase".to_string(),
                 "kraken".to_string(),
             ],
             updates_processed: AtomicU64::new(0),

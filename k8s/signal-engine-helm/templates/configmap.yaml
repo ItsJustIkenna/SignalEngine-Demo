@@ -99,14 +99,6 @@ data:
           window_size: "60s"
         timeout: "30s"
       
-      - name: "binance"  
-        enabled: {{ .Values.exchanges.binance.enabled | default true }}
-        sandbox: {{ .Values.exchanges.binance.sandbox | default false }}
-        rate_limits:
-          orders_per_second: 20
-          requests_per_second: 100
-          window_size: "60s"
-        timeout: "30s"
     
     # Default strategy configuration
     strategies:

@@ -312,8 +312,6 @@ configMap:
       latency_threshold_us = 100
       
       [exchanges]
-      binance_enabled = true
-      coinbase_enabled = true
       kraken_enabled = true
 
 # ==============================================================================
@@ -380,14 +378,6 @@ config:
         requests_per_second: 50
         window_size: "60s"
       timeout: "30s"
-    - name: "binance"
-      enabled: true
-      sandbox: false
-      rate_limits:
-        orders_per_second: 20
-        requests_per_second: 100
-        window_size: "60s"
-      timeout: "30s"
   
   # Security configuration
   security:
@@ -420,12 +410,6 @@ exchanges:
   kraken:
     enabled: true
     sandbox: false
-  binance:
-    enabled: true
-    sandbox: false
-  coinbase:
-    enabled: false
-    sandbox: true
 
 # Strategy configuration
 strategies:
@@ -618,10 +602,8 @@ externalServices:
   marketData:
     enabled: true
     providers:
-      - name: binance
-        endpoint: "wss://stream.binance.com:9443"
-      - name: coinbase
-        endpoint: "wss://ws-feed.pro.coinbase.com"
+      - name: kraken
+        endpoint: "wss://ws.kraken.com"
 
 # ==============================================================================
 # Backup & Disaster Recovery
