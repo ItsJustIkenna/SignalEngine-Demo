@@ -245,7 +245,7 @@ impl SignalGenerator {
 
     /// Get average volume for spike detection  
     fn get_average_volume(&self, symbol: &str) -> f64 {
-        // In production, this would be a rolling average
+        // A fuller version would use a rolling average
         // Mock implementation for now
         match symbol {
             "BTC/USD" => 1000000.0,

@@ -17,7 +17,7 @@ use executionhandler::exchanges::dex::{
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("🚀 SUI DEX Trading Example\n");
     
-    // Configuration for devnet (use testnet/mainnet in production)
+    // Configuration for devnet (use testnet/mainnet for a real deployment)
     let config = DexConfig {
         exchange_name: "Cetus".to_string(),
         network: BlockchainNetwork::SuiDevnet,

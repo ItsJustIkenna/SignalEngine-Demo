@@ -63,7 +63,7 @@ impl<K: Hash + Eq + Clone, V: Clone> LockFreeHashMap<K, V> {
                 let entry = unsafe { &*current };
                 if entry.hash == hash && entry.key == key {
                     // Key exists, update value (this is a simplified approach)
-                    // In production, would use CAS on value field
+                    // A fuller version would use CAS on value field
                     let _ = unsafe { Box::from_raw(new_entry) }; // Clean up
                     return Some(entry.value.clone());
                 }

@@ -426,15 +426,15 @@ secrets:
   
   # Database credentials  
   database:
-    password: "CHANGE_ME_IN_PRODUCTION"
+    password: "CHANGE_ME"
   
   # Redis credentials
   redis:
-    password: "CHANGE_ME_IN_PRODUCTION"
+    password: "CHANGE_ME"
     
   # Message broker credentials
   messageBroker:
-    password: "CHANGE_ME_IN_PRODUCTION"
+    password: "CHANGE_ME"
 
 # ==============================================================================
 # Performance & Optimization

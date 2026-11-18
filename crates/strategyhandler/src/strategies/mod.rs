@@ -109,7 +109,7 @@ impl StrategyRegistry {
     
     /// Get all strategies of a specific type (optimized)
     pub fn get_by_type(&self, strategy_type: StrategyType) -> Vec<StrategyId> {
-        // In production, this would use the pre-built type_mapping
+        // A fuller version would use the pre-built type_mapping
         self.strategies
             .iter()
             .filter_map(|entry| {

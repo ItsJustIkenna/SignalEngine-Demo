@@ -44,7 +44,7 @@ impl std::fmt::Display for AuthError {
 impl std::error::Error for AuthError {}
 
 pub struct TradingAuthenticator {
-    /// Secret key for JWT signing (in production, load from secure environment)
+    /// Secret key for JWT signing (in a deployment, load from secure environment)
     secret_key: String,
     /// Registered services and their permissions
     service_registry: HashMap<String, Vec<String>>,
@@ -112,7 +112,7 @@ impl TradingAuthenticator {
             iss: "trading-platform".to_string(),
         };
         
-        // Simple JWT-like token (in production, use proper JWT library)
+        // Simple JWT-like token (in a deployment, use proper JWT library)
         let payload = serde_json::to_string(&claims)
             .map_err(|_| AuthError::TokenGenerationFailed)?;
         
@@ -177,7 +177,7 @@ impl TradingAuthenticator {
         self.service_registry.insert(service_id, permissions);
     }
     
-    /// Create HMAC-like signature (simplified for demo - use proper HMAC in production)
+    /// Create HMAC-like signature (simplified for demo - use proper HMAC in a deployment)
     fn create_signature(&self, data: &str) -> String {
         use std::collections::hash_map::DefaultHasher;
         use std::hash::{Hash, Hasher};

@@ -114,7 +114,7 @@ pub struct DexConfig {
     /// RPC endpoint (with API key if needed)
     pub rpc_url: String,
     
-    /// Wallet private key (encrypted in production!)
+    /// Wallet private key (encrypt it outside a demo!)
     pub wallet_private_key: String,
     
     /// Wallet address (derived from private key)

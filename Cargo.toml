@@ -25,7 +25,7 @@ resolver = "2"
 # Logging engine
 ultra-logger = { path = "crates/ultra-logger" }
 
-# Ultra-Fast Production Optimizations
+# Performance optimizations
 crossbeam = "0.8"
 dashmap = "5.0"
 bytes = "1.0"

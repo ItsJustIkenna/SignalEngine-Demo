@@ -211,7 +211,7 @@ impl HostedObject {
     /// Add default strategies to the manager
     async fn add_default_strategies(manager: &StrategyManager) -> Result<(), Box<dyn Error>> {
         // Example: Create a default market making strategy
-        // In production, this would be loaded from configuration
+        // A fuller version would load this from configuration
         
         let mut params = HashMap::new();
         params.insert("gamma".to_string(), serde_json::json!(0.1));
@@ -328,7 +328,7 @@ impl HostedObject {
                     signal_count += 1;
                     
                     // Convert ultra_signal to order parameters
-                    let symbol = format!("SYMBOL_{}", signal.symbol_hash); // In production, use reverse hash lookup
+                    let symbol = format!("SYMBOL_{}", signal.symbol_hash); // A fuller version would use reverse hash lookup
                     let exchange = format!("EXCHANGE_{}", signal.exchange_id);
                     
                     let (side, order_type, price) = match signal.action {

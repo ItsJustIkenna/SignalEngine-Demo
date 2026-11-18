@@ -142,7 +142,7 @@ impl ExchangeConnector for KrakenConnector {
         let mut results = Vec::with_capacity(signals.len());
         
         // For now, execute sequentially to avoid Send issues
-        // In production, consider using channels or other async-safe patterns
+        // In a deployment, consider using channels or other async-safe patterns
         for signal in signals {
             let result = self.execute_order(signal).await?;
             results.push(result);

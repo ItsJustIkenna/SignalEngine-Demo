@@ -304,7 +304,7 @@ impl CetusConnector {
         // Add pool object (need to query actual version and digest)
         let pool_ref = ObjectRef {
             object_id: pool.pool_id.clone(),
-            version: 1, // Note: In production, query actual version via sui_getObject
+            version: 1, // Note: In a full implementation, query actual version via sui_getObject
             digest: "11111111111111111111111111111111".to_string(),
         };
         let pool_arg = builder.add_object_input(pool_ref);

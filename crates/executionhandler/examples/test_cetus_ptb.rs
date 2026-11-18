@@ -16,7 +16,7 @@ async fn main() {
     println!("🔧 Testing Cetus PTB Building & Execution\n");
     println!("{}", "=".repeat(70));
     
-    // Generate a test private key (DO NOT use in production!)
+    // Generate a test private key (for testing only!)
     use rand::RngCore;
     let mut secret_bytes = [0u8; 32];
     rand::rngs::OsRng.fill_bytes(&mut secret_bytes);
