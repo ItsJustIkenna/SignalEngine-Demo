@@ -204,7 +204,6 @@ pub enum OrderType {
     Limit,
     Stop,
     StopLimit,
-    Iceberg,
     PostOnly,
 }
 

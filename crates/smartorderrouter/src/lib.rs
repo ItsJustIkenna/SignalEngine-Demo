@@ -32,7 +32,6 @@ pub enum OrderType {
     Market,
     Limit,
     StopLimit,
-    Iceberg,
     TWAP,
     VWAP,
     Implementation,  // Implementation Shortfall
