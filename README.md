@@ -33,6 +33,8 @@ The workspace also defines a `release-optimized` profile (fat LTO, `panic = "abo
 
 `cargo test --workspace` runs about 130 `#[test]`/`#[tokio::test]` functions (static count) across the crates, including `tests/performance_integration_test.rs` and `crates/executionhandler/tests/`.
 
+Known issue: `signalengine-core` has one failing test, `memory_pool::tests::test_concurrent_access`, which also fails before the recent cleanup commits. Everything else in the workspace passes.
+
 ## Scope and disclaimer
 
 Research, backtesting and paper-trading code. It makes no claim of use with real capital, and nothing here is investment advice.
