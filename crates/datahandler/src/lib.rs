@@ -644,7 +644,7 @@ mod tests {
     #[test]
     fn test_orderbook_creation() {
         let data_handler = DataHandler::new().unwrap();
-        let orderbook = data_handler.get_or_create_orderbook("BTC/USD", "binance");
+        let orderbook = data_handler.get_or_create_orderbook("BTC/USD", "kraken");
         
         assert!(orderbook.read().is_ok());
     }
@@ -668,11 +668,11 @@ mod tests {
             },
         ];
         
-        let result = data_handler.update_orderbook_fast("BTC/USD", "binance", &updates);
+        let result = data_handler.update_orderbook_fast("BTC/USD", "kraken", &updates);
         assert!(result.is_ok());
         
         // Verify data was updated
-        let market_data = data_handler.generate_market_data("BTC/USD", "binance");
+        let market_data = data_handler.generate_market_data("BTC/USD", "kraken");
         assert!(market_data.is_some());
         
         let md = market_data.unwrap();
@@ -711,9 +711,9 @@ mod tests {
             },
         ];
         
-        data_handler.update_orderbook_fast("ETH/USD", "coinbase", &updates).unwrap();
+        data_handler.update_orderbook_fast("ETH/USD", "kraken", &updates).unwrap();
         
-        let market_data = data_handler.generate_market_data("ETH/USD", "coinbase");
+        let market_data = data_handler.generate_market_data("ETH/USD", "kraken");
         assert!(market_data.is_some());
         
         let md = market_data.unwrap();
